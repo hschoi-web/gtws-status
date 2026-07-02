@@ -75,7 +75,7 @@
   .route.open .runs{max-height:1200px}
   .run{display:flex;align-items:center;gap:1rem;padding:.8rem 1.15rem;border-top:1px solid var(--line)}
   .run .rc{font-size:.74rem;color:var(--muted);width:2.6rem;flex-shrink:0}
-  .run .rt{font-size:1.05rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.02em;width:3.4rem;flex-shrink:0}
+  .run .rt{font-size:1.02rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.02em;min-width:3.4rem;white-space:nowrap;flex-shrink:0}
   .run .prog{flex:1}
   .run .ptrack{height:8px;border-radius:99px;background:var(--track);overflow:hidden}
   .run .pfill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0;transition:width 1s cubic-bezier(.16,1,.3,1)}
@@ -181,8 +181,6 @@ function renderRoutes(){
         <div class="rt-path">${path}</div>
       </div>
       <div class="rt-agg">
-        <div class="mini"><div class="mtrack"><div class="mfill" style="width:${agg}%"></div></div></div>
-        <span class="pct">${agg}%</span>
         <span class="chev">›</span>
       </div>`;
     head.onclick=()=>card.classList.toggle('open');
@@ -192,9 +190,9 @@ function renderRoutes(){
     info.runs.forEach(r=>{
       const rate=rateOf(r.booked);
       const row=document.createElement('div'); row.className='run'+(rate>=100?' full':'');
+      const label=(r.deps&&r.deps.length?r.deps:[r.dep]).join(', ');
       row.innerHTML=`
-        <span class="rt">${r.dep}</span>
-        <span class="rc">${r.run||''}</span>
+        <span class="rt">${label}</span>
         <span class="prog"><span class="ptrack"><span class="pfill" data-w="${rate}"></span></span></span>
         <span class="pv">${rate}%</span>`;
       runs.appendChild(row);
