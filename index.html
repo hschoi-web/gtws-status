@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<title>2026 GTWS 셔틀 예약현황</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+
+  :root{
+    /* RIDEUS/GTWS 톤: 화이트 기반 + 골든트레일 골드 포인트 + 딥 네이비 텍스트 */
+    --bg:#f5f6f8;
+    --panel:#ffffff;
+    --ink:#1a1d24;
+    --muted:#8b909a;
+    --line:#eceef1;
+    --brand:#1a1d24;
+    --accent:#c69a3f;       /* Golden Trail gold */
+    --accent-2:#e4c675;
+    --track:#eef0f3;
+    --radius:16px;
+    --shadow:0 2px 12px rgba(26,29,36,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;word-break:keep-all;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:clamp(1rem,4vw,2.5rem)}
+
+  /* Header */
+  header{margin-bottom:1.5rem}
+  .brandline{font-size:.7rem;letter-spacing:.2em;color:var(--accent);font-weight:800;text-transform:uppercase}
+  h1{font-size:clamp(1.4rem,4.5vw,2rem);font-weight:800;letter-spacing:-.02em;margin-top:.35rem}
+  .sub{color:var(--muted);font-size:.86rem;margin-top:.5rem}
+  .updated{font-size:.75rem;color:var(--muted);margin-top:.9rem;display:flex;align-items:center;gap:.4rem}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block}
+  .updated b{color:var(--ink);font-weight:600}
+
+  /* Date filter (단순 선택, 집계 대시보드 아님) */
+  .dates{display:flex;gap:.4rem;margin:1.25rem 0 .6rem}
+  .dates button{
+    flex:1;padding:.6rem;border:1px solid var(--line);background:var(--panel);
+    border-radius:10px;font-family:inherit;font-size:.85rem;font-weight:700;color:var(--muted);
+    cursor:pointer;transition:.15s;
+  }
+  .dates button.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+  .dir-tabs{display:flex;gap:.4rem;margin-bottom:1.1rem}
+  .dir-tabs button{
+    flex:1;padding:.55rem;border:none;background:transparent;border-bottom:2px solid var(--line);
+    font-family:inherit;font-size:.88rem;font-weight:700;color:var(--muted);cursor:pointer;transition:.15s;
+  }
+  .dir-tabs button.active{color:var(--ink);border-bottom-color:var(--accent)}
+  .dir-tabs button:disabled{opacity:.35;cursor:not-allowed}
+
+  /* Route card */
+  .route{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+         margin-bottom:.55rem;overflow:hidden;box-shadow:var(--shadow)}
+  .route-head{display:flex;align-items:center;gap:.85rem;padding:1.05rem 1.15rem;cursor:pointer;user-select:none}
+  .route-head:hover{background:#fafbfc}
+  .rt-name{font-weight:700;font-size:1.02rem}
+  .rt-path{font-size:.75rem;color:var(--muted);margin-top:.15rem}
+  .rt-agg{margin-left:auto;text-align:right;display:flex;align-items:center;gap:.75rem}
+  .rt-agg .mini{width:90px}
+  .rt-agg .mini .mtrack{height:6px;border-radius:99px;background:var(--track);overflow:hidden}
+  .rt-agg .mini .mfill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+  .rt-agg .pct{font-weight:800;font-size:1.05rem;font-variant-numeric:tabular-nums;min-width:3.2rem;text-align:right}
+  .chev{color:var(--muted);font-size:1.2rem;transition:transform .25s;margin-left:.2rem}
+  .route.open .chev{transform:rotate(90deg)}
+
+  .runs{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .route.open .runs{max-height:1200px}
+  .run{display:flex;align-items:center;gap:1rem;padding:.8rem 1.15rem;border-top:1px solid var(--line)}
+  .run .rc{font-size:.74rem;color:var(--muted);width:2.6rem;flex-shrink:0}
+  .run .rt{font-size:1.05rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.02em;width:3.4rem;flex-shrink:0}
+  .run .prog{flex:1}
+  .run .ptrack{height:8px;border-radius:99px;background:var(--track);overflow:hidden}
+  .run .pfill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0;transition:width 1s cubic-bezier(.16,1,.3,1)}
+  .run .pv{font-weight:800;font-size:.95rem;font-variant-numeric:tabular-nums;width:3.2rem;text-align:right;flex-shrink:0}
+  .run.full .pfill{background:linear-gradient(90deg,#3a7d5c,#5fb488)}
+  .run.full .pv{color:#3a7d5c}
+
+  .note{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;
+        font-size:.78rem;color:var(--muted);margin-top:1.5rem;line-height:1.6}
+  .note b{color:var(--ink)}
+  footer{margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--line);color:var(--muted);font-size:.76rem;line-height:1.7}
+  footer a{color:var(--accent);text-decoration:none}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brandline">2026 Golden Trail World Series</div>
+    <h1>셔틀 예약현황</h1>
+    <p class="sub">노선·시간대별 예약 달성률입니다. 각 노선 최소 운행 인원은 30명이며, 달성률 100% 도달 시 운행이 확정됩니다.</p>
+    <div class="updated"><span class="dot"></span>업데이트 <b id="upd">—</b> · 매일 오전 9시 기준</div>
+  </header>
+
+  <div class="dates" id="dates"></div>
+  <div class="dir-tabs" id="dirTabs"></div>
+  <div id="routeList"></div>
+
+  <div class="note">
+    ※ 표시되는 <b>달성률(%)</b>은 각 시간대(회차)의 예약 인원이 최소 운행 인원(30명)에 도달한 정도이며, 실제 예약 인원·잔여 좌석과는 다릅니다. 30명을 초과하더라도 100%로 표시됩니다. 최소 인원 미달 노선은 출발 전 사전 취소될 수 있으며, 확정 여부는 예약 시 안내됩니다.
+  </div>
+  <footer>
+    문의 <a href="mailto:ops@rideus.net">ops@rideus.net</a> (셔틀 문의 전용) · 운영 09:00–18:00 (주말·공휴일 휴무)<br>
+    예약 <a href="https://gtws.rideus.net/gtws">gtws.rideus.net</a> · © GroundK · RIDEUS
+  </footer>
+</div>
+
+<script>
+/* ===== 데이터 주입 지점 =====
+   실운영: n8n이 노션 "GTWS 예약현황" DB(무주리조트행/귀가행)를 매일 09:05 집계 →
+   status.json(GitHub Pages 동일 origin) 발행 → 아래 loadLive()가 fetch.
+   각 run의 booked = 그 회차 경유 탑승지 예약 합계.
+   달성률 rate = min(100, round(booked/30*100)).  (무주터미널도 최소 30명 기준 — 사용자 확정)
+*/
+const MIN = 30;                 // 전 노선 공통 최소 운행 인원
+const DIRS = ['행사장행','귀가행'];
+
+/* 데모 데이터 (실운영 시 status.json으로 대체) */
+const GTWS_DATA = {"10.23": {"행사장행": {"대전": {"stops": "KTX대전역", "runs": [{"run": "1회차", "dep": "13:00", "booked": 28}, {"run": "2회차", "dep": "20:00", "booked": 35}]}, "무주 터미널": {"stops": "무주공용터미널 맞은편 폭포 광장", "runs": [{"run": "1회차", "dep": "10:30", "booked": 29}, {"run": "2회차", "dep": "13:00", "booked": 28}, {"run": "3회차", "dep": "14:30", "booked": 32}, {"run": "4회차", "dep": "17:30", "booked": 37}, {"run": "5회차", "dep": "20:00", "booked": 12}]}, "천안/세종": {"stops": "천안 신세계백화점+세종 BRT환승센터 맞은편", "runs": [{"run": "1회차", "dep": "13:00", "booked": 11}, {"run": "2회차", "dep": "20:00", "booked": 32}]}, "광주": {"stops": "광주 유스퀘어 맞은편", "runs": [{"run": "1회차", "dep": "13:00", "booked": 30}, {"run": "2회차", "dep": "20:00", "booked": 40}]}, "서울역": {"stops": "서울역 13번 출구", "runs": [{"run": "1회차", "dep": "12:00", "booked": 39}, {"run": "2회차", "dep": "19:00", "booked": 11}]}, "종합운동장역": {"stops": "종합운동장역 7번 출구+천호역 7번 출구", "runs": [{"run": "1회차", "dep": "12:00", "booked": 6}, {"run": "2회차", "dep": "19:00", "booked": 28}]}, "상봉역": {"stops": "상봉역 1번 출구", "runs": [{"run": "1회차", "dep": "12:00", "booked": 19}, {"run": "2회차", "dep": "19:00", "booked": 9}]}, "인천": {"stops": "인천국제공항 T2+인천국제공항 T1+원인재역 1번 출구", "runs": [{"run": "1회차", "dep": "12:00", "booked": 5}, {"run": "2회차", "dep": "19:00", "booked": 34}]}, "고양/김포": {"stops": "백석역 2번 출구+김포국제공항 국제선", "runs": [{"run": "1회차", "dep": "12:00", "booked": 40}, {"run": "2회차", "dep": "19:00", "booked": 2}]}, "의정부": {"stops": "의정부역 지하상가 6번 출구+별내역 2번 출구", "runs": [{"run": "1회차", "dep": "12:00", "booked": 38}, {"run": "2회차", "dep": "19:00", "booked": 25}]}, "부산": {"stops": "부산역 지하철 4번 출구", "runs": [{"run": "1회차", "dep": "11:00", "booked": 28}, {"run": "2회차", "dep": "19:00", "booked": 41}]}, "울산/대구": {"stops": "울산 태화로터리+대구 콘서트하우스", "runs": [{"run": "1회차", "dep": "11:00", "booked": 39}, {"run": "2회차", "dep": "19:00", "booked": 41}]}, "강릉/원주": {"stops": "KTX강릉역+원주 치악예술관", "runs": [{"run": "1회차", "dep": "11:00", "booked": 10}, {"run": "2회차", "dep": "19:00", "booked": 39}]}}}, "10.24": {"행사장행": {"대전": {"stops": "KTX대전역", "runs": [{"run": "1회차", "dep": "02:20", "booked": 0}, {"run": "2회차", "dep": "09:00", "booked": 33}, {"run": "3회차", "dep": "14:30", "booked": 4}]}, "무주 터미널": {"stops": "무주공용터미널 맞은편 폭포 광장", "runs": [{"run": "1회차", "dep": "03:05", "booked": 3}, {"run": "2회차", "dep": "09:00", "booked": 2}, {"run": "3회차", "dep": "10:30", "booked": 12}, {"run": "4회차", "dep": "13:00", "booked": 15}, {"run": "5회차", "dep": "15:00", "booked": 38}, {"run": "6회차", "dep": "17:30", "booked": 1}, {"run": "7회차", "dep": "20:00", "booked": 29}]}, "천안/세종": {"stops": "천안 신세계백화점+세종 BRT환승센터 맞은편", "runs": [{"run": "1회차", "dep": "01:00", "booked": 20}, {"run": "2회차", "dep": "07:00", "booked": 28}, {"run": "3회차", "dep": "13:00", "booked": 37}]}, "광주": {"stops": "광주 유스퀘어 맞은편", "runs": [{"run": "1회차", "dep": "01:30", "booked": 12}, {"run": "2회차", "dep": "08:00", "booked": 33}, {"run": "3회차", "dep": "13:00", "booked": 14}]}, "서울역": {"stops": "서울역 13번 출구", "runs": [{"run": "1회차", "dep": "00:00", "booked": 40}, {"run": "2회차", "dep": "07:00", "booked": 18}, {"run": "3회차", "dep": "12:00", "booked": 31}]}, "종합운동장역": {"stops": "종합운동장역 7번 출구+천호역 7번 출구", "runs": [{"run": "1회차", "dep": "00:30", "booked": 0}, {"run": "2회차", "dep": "07:00", "booked": 42}, {"run": "3회차", "dep": "12:00", "booked": 5}]}, "상봉역": {"stops": "상봉역 1번 출구", "runs": [{"run": "1회차", "dep": "00:30", "booked": 29}, {"run": "2회차", "dep": "07:00", "booked": 41}, {"run": "3회차", "dep": "12:00", "booked": 17}]}, "인천": {"stops": "인천국제공항 T2+인천국제공항 T1+원인재역 1번 출구", "runs": [{"run": "1회차", "dep": "00:00", "booked": 26}, {"run": "2회차", "dep": "06:10", "booked": 35}, {"run": "3회차", "dep": "11:10", "booked": 5}]}, "고양/김포": {"stops": "백석역 2번 출구+김포국제공항 국제선", "runs": [{"run": "1회차", "dep": "00:00", "booked": 16}, {"run": "2회차", "dep": "06:30", "booked": 20}, {"run": "3회차", "dep": "11:30", "booked": 14}]}, "의정부": {"stops": "의정부역 지하상가 6번 출구+별내역 2번 출구", "runs": [{"run": "1회차", "dep": "00:30", "booked": 32}, {"run": "2회차", "dep": "07:00", "booked": 18}, {"run": "3회차", "dep": "12:00", "booked": 1}]}, "부산": {"stops": "부산역 지하철 4번 출구", "runs": [{"run": "1회차", "dep": "00:30", "booked": 4}, {"run": "2회차", "dep": "07:00", "booked": 36}, {"run": "3회차", "dep": "12:00", "booked": 6}]}, "울산/대구": {"stops": "울산 태화로터리+대구 콘서트하우스", "runs": [{"run": "1회차", "dep": "00:00", "booked": 25}, {"run": "2회차", "dep": "06:30", "booked": 6}, {"run": "3회차", "dep": "11:30", "booked": 18}]}, "강릉/원주": {"stops": "KTX강릉역+원주 치악예술관", "runs": [{"run": "1회차", "dep": "00:40", "booked": 24}, {"run": "2회차", "dep": "05:30", "booked": 4}, {"run": "3회차", "dep": "10:30", "booked": 1}]}}, "귀가행": {"대전": {"stops": "KTX대전역", "runs": [{"run": "1회차", "dep": "15:00", "booked": 0}, {"run": "2회차", "dep": "17:00", "booked": 13}, {"run": "3회차", "dep": "19:30", "booked": 13}, {"run": "4회차", "dep": "21:30", "booked": 3}]}, "무주 터미널": {"stops": "무주공용터미널 맞은편 폭포 광장", "runs": [{"run": "1회차", "dep": "19:30", "booked": 30}, {"run": "2회차", "dep": "21:30", "booked": 24}]}, "천안/세종": {"stops": "천안 신세계백화점+세종 BRT환승센터 맞은편", "runs": [{"run": "1회차", "dep": "19:30", "booked": 25}, {"run": "2회차", "dep": "21:30", "booked": 26}]}, "광주": {"stops": "광주 유스퀘어 맞은편", "runs": [{"run": "1회차", "dep": "19:30", "booked": 4}, {"run": "2회차", "dep": "21:30", "booked": 36}]}, "서울역": {"stops": "서울역 13번 출구", "runs": [{"run": "1회차", "dep": "19:15", "booked": 40}, {"run": "2회차", "dep": "21:15", "booked": 12}]}, "종합운동장역": {"stops": "종합운동장역 7번 출구+천호역 7번 출구", "runs": [{"run": "1회차", "dep": "19:15", "booked": 17}, {"run": "2회차", "dep": "21:15", "booked": 21}]}, "상봉역": {"stops": "상봉역 1번 출구", "runs": [{"run": "1회차", "dep": "19:15", "booked": 5}, {"run": "2회차", "dep": "21:15", "booked": 19}]}, "인천": {"stops": "인천국제공항 T2+인천국제공항 T1+원인재역 1번 출구", "runs": [{"run": "1회차", "dep": "19:15", "booked": 21}, {"run": "2회차", "dep": "21:15", "booked": 0}]}, "고양/김포": {"stops": "백석역 2번 출구+김포국제공항 국제선", "runs": [{"run": "1회차", "dep": "19:15", "booked": 26}, {"run": "2회차", "dep": "21:15", "booked": 7}]}, "의정부": {"stops": "의정부역 지하상가 6번 출구+별내역 2번 출구", "runs": [{"run": "1회차", "dep": "19:15", "booked": 8}, {"run": "2회차", "dep": "21:15", "booked": 15}]}, "부산": {"stops": "부산역 지하철 4번 출구", "runs": [{"run": "1회차", "dep": "19:00", "booked": 6}, {"run": "2회차", "dep": "21:00", "booked": 0}]}, "울산/대구": {"stops": "울산 태화로터리+대구 콘서트하우스", "runs": [{"run": "1회차", "dep": "19:00", "booked": 3}, {"run": "2회차", "dep": "21:00", "booked": 29}]}, "강릉/원주": {"stops": "KTX강릉역+원주 치악예술관", "runs": [{"run": "1회차", "dep": "19:00", "booked": 31}, {"run": "2회차", "dep": "21:00", "booked": 11}]}}}, "10.25": {"행사장행": {"대전": {"stops": "KTX대전역", "runs": [{"run": "1회차", "dep": "03:00", "booked": 35}, {"run": "2회차", "dep": "09:00", "booked": 12}]}, "무주 터미널": {"stops": "무주공용터미널 맞은편 폭포 광장", "runs": [{"run": "1회차", "dep": "03:05", "booked": 28}, {"run": "2회차", "dep": "09:00", "booked": 32}, {"run": "3회차", "dep": "10:30", "booked": 12}]}, "천안/세종": {"stops": "천안 신세계백화점+세종 BRT환승센터 맞은편", "runs": [{"run": "1회차", "dep": "01:00", "booked": 8}, {"run": "2회차", "dep": "07:00", "booked": 26}]}, "광주": {"stops": "광주 유스퀘어 맞은편", "runs": [{"run": "1회차", "dep": "02:00", "booked": 41}, {"run": "2회차", "dep": "08:00", "booked": 24}]}, "서울역": {"stops": "서울역 13번 출구", "runs": [{"run": "1회차", "dep": "01:00", "booked": 7}, {"run": "2회차", "dep": "07:00", "booked": 25}]}, "종합운동장역": {"stops": "종합운동장역 7번 출구+천호역 7번 출구", "runs": [{"run": "1회차", "dep": "01:00", "booked": 26}, {"run": "2회차", "dep": "07:00", "booked": 13}]}, "상봉역": {"stops": "상봉역 1번 출구", "runs": [{"run": "1회차", "dep": "01:00", "booked": 0}, {"run": "2회차", "dep": "07:00", "booked": 17}]}, "인천": {"stops": "인천국제공항 T2+인천국제공항 T1+원인재역 1번 출구", "runs": [{"run": "1회차", "dep": "00:00", "booked": 37}, {"run": "2회차", "dep": "06:10", "booked": 19}]}, "고양/김포": {"stops": "백석역 2번 출구+김포국제공항 국제선", "runs": [{"run": "1회차", "dep": "00:30", "booked": 1}, {"run": "2회차", "dep": "06:30", "booked": 13}]}, "의정부": {"stops": "의정부역 지하상가 6번 출구+별내역 2번 출구", "runs": [{"run": "1회차", "dep": "01:00", "booked": 11}, {"run": "2회차", "dep": "07:00", "booked": 25}]}, "부산": {"stops": "부산역 지하철 4번 출구", "runs": [{"run": "1회차", "dep": "01:00", "booked": 38}, {"run": "2회차", "dep": "07:00", "booked": 41}]}, "울산/대구": {"stops": "울산 태화로터리+대구 콘서트하우스", "runs": [{"run": "1회차", "dep": "00:30", "booked": 36}, {"run": "2회차", "dep": "06:30", "booked": 6}]}, "강릉/원주": {"stops": "KTX강릉역+원주 치악예술관", "runs": [{"run": "1회차", "dep": "00:40", "booked": 2}, {"run": "2회차", "dep": "05:30", "booked": 9}]}}, "귀가행": {"대전": {"stops": "KTX대전역", "runs": [{"run": "1회차", "dep": "15:00", "booked": 13}, {"run": "2회차", "dep": "17:00", "booked": 28}, {"run": "3회차", "dep": "19:30", "booked": 16}, {"run": "4회차", "dep": "21:30", "booked": 0}]}, "무주 터미널": {"stops": "무주공용터미널 맞은편 폭포 광장", "runs": [{"run": "1회차", "dep": "19:30", "booked": 39}, {"run": "2회차", "dep": "21:30", "booked": 21}]}, "천안/세종": {"stops": "천안 신세계백화점+세종 BRT환승센터 맞은편", "runs": [{"run": "1회차", "dep": "19:30", "booked": 18}, {"run": "2회차", "dep": "21:30", "booked": 24}]}, "광주": {"stops": "광주 유스퀘어 맞은편", "runs": [{"run": "1회차", "dep": "19:30", "booked": 4}, {"run": "2회차", "dep": "21:30", "booked": 4}]}, "서울역": {"stops": "서울역 13번 출구", "runs": [{"run": "1회차", "dep": "19:15", "booked": 5}, {"run": "2회차", "dep": "21:15", "booked": 13}]}, "종합운동장역": {"stops": "종합운동장역 7번 출구+천호역 7번 출구", "runs": [{"run": "1회차", "dep": "19:15", "booked": 37}, {"run": "2회차", "dep": "21:15", "booked": 40}]}, "상봉역": {"stops": "상봉역 1번 출구", "runs": [{"run": "1회차", "dep": "19:15", "booked": 15}, {"run": "2회차", "dep": "21:15", "booked": 0}]}, "인천": {"stops": "인천국제공항 T2+인천국제공항 T1+원인재역 1번 출구", "runs": [{"run": "1회차", "dep": "19:15", "booked": 38}, {"run": "2회차", "dep": "21:15", "booked": 23}]}, "고양/김포": {"stops": "백석역 2번 출구+김포국제공항 국제선", "runs": [{"run": "1회차", "dep": "19:15", "booked": 23}, {"run": "2회차", "dep": "21:15", "booked": 39}]}, "의정부": {"stops": "의정부역 지하상가 6번 출구+별내역 2번 출구", "runs": [{"run": "1회차", "dep": "19:15", "booked": 29}, {"run": "2회차", "dep": "21:15", "booked": 8}]}, "부산": {"stops": "부산역 지하철 4번 출구", "runs": [{"run": "1회차", "dep": "19:00", "booked": 37}, {"run": "2회차", "dep": "21:00", "booked": 30}]}, "울산/대구": {"stops": "울산 태화로터리+대구 콘서트하우스", "runs": [{"run": "1회차", "dep": "19:00", "booked": 36}, {"run": "2회차", "dep": "21:00", "booked": 8}]}, "강릉/원주": {"stops": "KTX강릉역+원주 치악예술관", "runs": [{"run": "1회차", "dep": "19:00", "booked": 24}, {"run": "2회차", "dep": "21:00", "booked": 11}]}}}};
+
+let curDate=null, curDir='행사장행';
+
+function rateOf(booked){ return Math.min(100, Math.round((booked/MIN)*100)); }
+function routeAgg(info){   // 노선 카드 요약 = 회차 평균 달성률
+  if(!info.runs.length) return 0;
+  const s=info.runs.reduce((a,r)=>a+rateOf(r.booked),0);
+  return Math.round(s/info.runs.length);
+}
+
+function renderDates(){
+  const el=document.getElementById('dates'); el.innerHTML='';
+  const dates=Object.keys(GTWS_DATA);
+  if(!curDate) curDate=dates[0];
+  const LBL={'10.23':'10.23 (금)','10.24':'10.24 (토)','10.25':'10.25 (일)'};
+  dates.forEach(d=>{
+    const b=document.createElement('button');
+    b.textContent=LBL[d]||d; b.className=d===curDate?'active':'';
+    b.onclick=()=>{curDate=d; ensureDir(); renderAll();};
+    el.appendChild(b);
+  });
+  document.getElementById('upd').textContent=new Date().toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function ensureDir(){ if(!(GTWS_DATA[curDate]||{})[curDir]) curDir=Object.keys(GTWS_DATA[curDate])[0]; }
+
+function renderDirTabs(){
+  const el=document.getElementById('dirTabs'); el.innerHTML='';
+  const avail=Object.keys(GTWS_DATA[curDate]||{});
+  DIRS.forEach(dir=>{
+    const b=document.createElement('button');
+    b.textContent=dir==='행사장행'?'행사장행 (무주 리조트행)':'귀가행';
+    b.className=dir===curDir?'active':''; b.disabled=!avail.includes(dir);
+    b.onclick=()=>{curDir=dir; renderRoutes(); renderDirTabs();};
+    el.appendChild(b);
+  });
+}
+
+function renderRoutes(){
+  const el=document.getElementById('routeList'); el.innerHTML='';
+  const rd=(GTWS_DATA[curDate]||{})[curDir]||{};
+  for(const rt in rd){
+    const info=rd[rt];
+    const agg=routeAgg(info);
+    const path=(info.stops||'').split('+').join(' · ');
+    const card=document.createElement('div'); card.className='route';
+    const head=document.createElement('div'); head.className='route-head';
+    head.innerHTML=`
+      <div>
+        <div class="rt-name">${rt} 노선</div>
+        <div class="rt-path">${path}</div>
+      </div>
+      <div class="rt-agg">
+        <div class="mini"><div class="mtrack"><div class="mfill" style="width:${agg}%"></div></div></div>
+        <span class="pct">${agg}%</span>
+        <span class="chev">›</span>
+      </div>`;
+    head.onclick=()=>card.classList.toggle('open');
+    card.appendChild(head);
+
+    const runs=document.createElement('div'); runs.className='runs';
+    info.runs.forEach(r=>{
+      const rate=rateOf(r.booked);
+      const row=document.createElement('div'); row.className='run'+(rate>=100?' full':'');
+      row.innerHTML=`
+        <span class="rt">${r.dep}</span>
+        <span class="rc">${r.run||''}</span>
+        <span class="prog"><span class="ptrack"><span class="pfill" data-w="${rate}"></span></span></span>
+        <span class="pv">${rate}%</span>`;
+      runs.appendChild(row);
+    });
+    card.appendChild(runs);
+    el.appendChild(card);
+  }
+  // 펼칠 때 애니메이션
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.route').forEach(c=>{
+      c.addEventListener('transitionend',()=>{},{once:true});
+    });
+  });
+}
+
+/* 아코디언 열릴 때 바 채우기 */
+document.addEventListener('click',e=>{
+  const head=e.target.closest('.route-head'); if(!head) return;
+  const card=head.parentElement;
+  if(card.classList.contains('open')){
+    setTimeout(()=>{
+      card.querySelectorAll('.pfill').forEach((el,i)=>{
+        setTimeout(()=>el.style.width=el.dataset.w+'%', i*60);
+      });
+    },50);
+  }
+});
+
+function renderAll(){ renderDates(); renderDirTabs(); renderRoutes(); }
+
+/* 실운영: status.json 우선. ?demo=1 이면 데모 데이터 */
+function showEmpty(){
+  document.getElementById("dates").innerHTML="";
+  document.getElementById("dirTabs").innerHTML="";
+  document.getElementById("routeList").innerHTML='<div class="note" style="text-align:center">아직 예약 집계 데이터가 없습니다.<br>예약이 시작되면 자동으로 표시됩니다.</div>';
+  document.getElementById("upd").textContent="—";
+}
+async function loadLive(){
+  try{
+    const res=await fetch("./status.json",{cache:"no-store"});
+    const live=await res.json();
+    const days=live.days||live;
+    Object.keys(GTWS_DATA).forEach(k=>delete GTWS_DATA[k]);
+    Object.assign(GTWS_DATA, days||{});
+    if(!Object.keys(GTWS_DATA).length){ showEmpty(); return; }
+    curDate=null; ensureDir(); renderAll();
+    if(live.updated){ try{ document.getElementById("upd").textContent=new Date(live.updated).toLocaleString("ko-KR",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"}); }catch(_){} }
+  }catch(e){ console.warn("status fetch 실패",e); showEmpty(); }
+}
+if(new URLSearchParams(location.search).get("demo")==="1"){ ensureDir(); renderAll(); }
+else { loadLive(); setInterval(loadLive, 10*60*1000); }
+</script>
+</body>
+</html>
