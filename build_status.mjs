@@ -64,25 +64,53 @@ function latestOnly(rows) {
   return withDate.filter(r => r["조회일"] === max);
 }
 
+const GAP_MIN = 120;               // 같은 회차로 볼 정류장 간 최대 간격(분)
+const mins = t => { const m = String(t).match(/(\d+):(\d+)/); return m ? (+m[1])*60 + (+m[2]) : 0; };
+
+// 한 (날짜·방향·노선)의 예약 회차 묶기.
+// 행사장행: 한 버스가 여러 정류장을 순회 → 서로 다른 정류장이고 GAP_MIN 이내면 같은 회차로 합산.
+// 귀가행: 리조트 출발시각이 회차 기준 → 시각별로 그대로(묶지 않음).
+// 예약 0인 시각(유령 회차)은 자동 제외됨(booked>0만 회차가 됨).
+function groupRuns(rows, cols, merge) {
+  const perTime = [];
+  for (const r of rows) {
+    const stops = {}; let tot = 0;
+    for (const c of cols) { const n = Number(r[c]) || 0; if (n > 0) { stops[c] = n; tot += n; } }
+    if (tot > 0) perTime.push({ dep: String(r["탑승시간"]).trim(), stops, tot });
+  }
+  perTime.sort((a,b)=> mins(a.dep) - mins(b.dep));
+  const groups = [];
+  for (const pt of perTime) {
+    const g = groups[groups.length-1];
+    const keys = Object.keys(pt.stops);
+    const overlap = g && keys.some(s => g.stopSet.has(s));
+    const close   = merge && g && (mins(pt.dep) - g.lastMin <= GAP_MIN);
+    if (g && close && !overlap) {
+      g.booked += pt.tot; g.lastMin = mins(pt.dep); g.deps.push(pt.dep); keys.forEach(s => g.stopSet.add(s));
+    } else {
+      groups.push({ dep: pt.dep, deps: [pt.dep], booked: pt.tot, lastMin: mins(pt.dep), stopSet: new Set(keys) });
+    }
+  }
+  return groups.map((g,i) => ({ run: `${i+1}회차`, dep: g.dep, deps: g.deps, booked: g.booked }));
+}
+
 function build(eventRows, homeRows) {
   const days = {};
   const add = (rows, dir) => { for (const j of rows) {
-    const date = String(j["탑승일"]).trim(), dep = String(j["탑승시간"]).trim();
+    const date = String(j["탑승일"]).trim();
     if (!date) continue;
-    days[date] ??= { "행사장행":{}, "귀가행":{} };
-    for (const [route, cols] of Object.entries(ROUTE_MAP)) {
-      const booked = cols.reduce((s,c)=> s + (Number(j[c])||0), 0);
-      (days[date][dir][route] ??= { stops: cols.join("+"), runs: [] }).runs.push({ dep, booked });
-    }
+    (days[date] ??= { "행사장행":{}, "귀가행":{} });
+    (days[date][dir]._rows ??= []).push(j);
   }};
   add(eventRows, "행사장행"); add(homeRows, "귀가행");
-  for (const d in days) for (const dir in days[d]) for (const rt in days[d][dir]) {
-    // A안: 예약이 1건이라도 있는 회차만 노출(유령 회차 제거). 다구간 회차 묶음(#2)은 후속(실시간표 반영) 예정.
-    const runs = days[d][dir][rt].runs
-      .filter(r => r.booked > 0)
-      .sort((a,b)=> a.dep.localeCompare(b.dep));
-    runs.forEach((r,i)=> r.run = `${i+1}회차`);
-    days[d][dir][rt].runs = runs;
+  for (const d in days) for (const dir of ["행사장행","귀가행"]) {
+    const rows = days[d][dir]._rows || [];
+    delete days[d][dir]._rows;
+    if (!rows.length) continue; // 해당 방향 데이터 자체가 없으면(예: 10.23 귀가행) 방향 탭 비활성
+    for (const [route, cols] of Object.entries(ROUTE_MAP)) {
+      const runs = groupRuns(rows, cols, dir === "행사장행");
+      days[d][dir][route] = { stops: cols.join("+"), runs }; // 예약0 노선도 카드 유지(0%)
+    }
   }
   const sorted = {}; Object.keys(days).sort((a,b)=> dayKey(a)-dayKey(b)).forEach(k=> sorted[k]=days[k]);
   return sorted;
