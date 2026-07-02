@@ -34,7 +34,7 @@
   header{margin-bottom:1.5rem}
   .brandline{font-size:.7rem;letter-spacing:.2em;color:var(--accent);font-weight:800;text-transform:uppercase}
   h1{font-size:clamp(1.4rem,4.5vw,2rem);font-weight:800;letter-spacing:-.02em;margin-top:.35rem}
-  .sub{color:var(--muted);font-size:.86rem;margin-top:.5rem}
+  .sub{color:var(--muted);font-size:.98rem;line-height:1.55;margin-top:.5rem}
   .updated{font-size:.75rem;color:var(--muted);margin-top:.9rem;display:flex;align-items:center;gap:.4rem}
   .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block}
   .updated b{color:var(--ink);font-weight:600}
@@ -82,6 +82,7 @@
   .run .pv{font-weight:800;font-size:.95rem;font-variant-numeric:tabular-nums;width:3.2rem;text-align:right;flex-shrink:0}
   .run.full .pfill{background:linear-gradient(90deg,#3a7d5c,#5fb488)}
   .run.full .pv{color:#3a7d5c}
+  .run.empty .rt,.run.empty .pv{color:var(--muted);font-weight:600}
 
   .note{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;
         font-size:.78rem;color:var(--muted);margin-top:1.5rem;line-height:1.6}
@@ -96,7 +97,7 @@
   <header>
     <div class="brandline">2026 Golden Trail World Series</div>
     <h1>셔틀 예약현황</h1>
-    <p class="sub">노선·시간대별 예약 달성률입니다. 예약 마감일 이후 각 노선 회차별 최소 운행 인원(30명) 도달 시 운행이 확정됩니다.</p>
+    <p class="sub">노선·시간대별 예약 달성률입니다. 예약 마감일 이후 각 노선 회차별 최소 운행 인원(30명) 도달 시 운행이 확정됩니다. 예약 달성률이 0%인 경우 리스트에 노출되지 않습니다.</p>
     <div class="updated"><span class="dot"></span>업데이트 : 매일 오전 9시 기준</div>
   </header>
 
@@ -192,6 +193,11 @@ function renderRoutes(){
     card.appendChild(head);
 
     const runs=document.createElement('div'); runs.className='runs';
+    if(!info.runs.length){
+      const row=document.createElement('div'); row.className='run empty';
+      row.innerHTML=`<span class="rt">-</span><span class="prog"></span><span class="pv">-</span>`;
+      runs.appendChild(row);
+    }
     info.runs.forEach(r=>{
       const rate=rateOf(r.booked);
       const row=document.createElement('div'); row.className='run'+(rate>=100?' full':'');
