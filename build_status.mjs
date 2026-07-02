@@ -77,8 +77,12 @@ function build(eventRows, homeRows) {
   }};
   add(eventRows, "행사장행"); add(homeRows, "귀가행");
   for (const d in days) for (const dir in days[d]) for (const rt in days[d][dir]) {
-    const runs = days[d][dir][rt].runs.sort((a,b)=> a.dep.localeCompare(b.dep));
+    // A안: 예약이 1건이라도 있는 회차만 노출(유령 회차 제거). 다구간 회차 묶음(#2)은 후속(실시간표 반영) 예정.
+    const runs = days[d][dir][rt].runs
+      .filter(r => r.booked > 0)
+      .sort((a,b)=> a.dep.localeCompare(b.dep));
     runs.forEach((r,i)=> r.run = `${i+1}회차`);
+    days[d][dir][rt].runs = runs;
   }
   const sorted = {}; Object.keys(days).sort((a,b)=> dayKey(a)-dayKey(b)).forEach(k=> sorted[k]=days[k]);
   return sorted;
