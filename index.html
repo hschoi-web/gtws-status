@@ -96,8 +96,8 @@
   <header>
     <div class="brandline">2026 Golden Trail World Series</div>
     <h1>셔틀 예약현황</h1>
-    <p class="sub">노선·시간대별 예약 달성률입니다. 각 노선 최소 운행 인원은 30명이며, 달성률 100% 도달 시 운행이 확정됩니다.</p>
-    <div class="updated"><span class="dot"></span>업데이트 <b id="upd">—</b> · 매일 오전 9시 기준</div>
+    <p class="sub">노선·시간대별 예약 달성률입니다. 예약 마감일 이후 각 노선 회차별 최소 운행 인원(30명) 도달 시 운행이 확정됩니다.</p>
+    <div class="updated"><span class="dot"></span>업데이트 : 매일 오전 9시 기준</div>
   </header>
 
   <div class="dates" id="dates"></div>
@@ -146,7 +146,6 @@ function renderDates(){
     b.onclick=()=>{curDate=d; ensureDir(); renderAll();};
     el.appendChild(b);
   });
-  document.getElementById('upd').textContent=new Date().toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
 }
 function ensureDir(){
   if(!curDate || !GTWS_DATA[curDate]) curDate=Object.keys(GTWS_DATA)[0];
@@ -169,6 +168,12 @@ function renderDirTabs(){
 function renderRoutes(){
   const el=document.getElementById('routeList'); el.innerHTML='';
   const rd=(GTWS_DATA[curDate]||{})[curDir]||{};
+  if(!Object.keys(rd).length){
+    el.innerHTML = curDir==='귀가행'
+      ? `<div class="note" style="text-align:center">10월 ${(curDate||'').split('.')[1]}일은 귀가행을 운행하지 않습니다.</div>`
+      : `<div class="note" style="text-align:center">해당 일자·방향의 예약 데이터가 없습니다.</div>`;
+    return;
+  }
   for(const rt in rd){
     const info=rd[rt];
     const agg=routeAgg(info);
@@ -228,7 +233,6 @@ function showEmpty(){
   document.getElementById("dates").innerHTML="";
   document.getElementById("dirTabs").innerHTML="";
   document.getElementById("routeList").innerHTML='<div class="note" style="text-align:center">아직 예약 집계 데이터가 없습니다.<br>예약이 시작되면 자동으로 표시됩니다.</div>';
-  document.getElementById("upd").textContent="—";
 }
 async function loadLive(){
   try{
@@ -239,7 +243,6 @@ async function loadLive(){
     Object.assign(GTWS_DATA, days||{});
     if(!Object.keys(GTWS_DATA).length){ showEmpty(); return; }
     curDate=null; ensureDir(); renderAll();
-    if(live.updated){ try{ document.getElementById("upd").textContent=new Date(live.updated).toLocaleString("ko-KR",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"}); }catch(_){} }
   }catch(e){ console.warn("status fetch 실패",e); showEmpty(); }
 }
 if(new URLSearchParams(location.search).get("demo")==="1"){ ensureDir(); renderAll(); }
