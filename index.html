@@ -148,7 +148,11 @@ function renderDates(){
   });
   document.getElementById('upd').textContent=new Date().toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
 }
-function ensureDir(){ if(!(GTWS_DATA[curDate]||{})[curDir]) curDir=Object.keys(GTWS_DATA[curDate])[0]; }
+function ensureDir(){
+  if(!curDate || !GTWS_DATA[curDate]) curDate=Object.keys(GTWS_DATA)[0];
+  if(!curDate) return;
+  if(!GTWS_DATA[curDate][curDir]) curDir=Object.keys(GTWS_DATA[curDate])[0];
+}
 
 function renderDirTabs(){
   const el=document.getElementById('dirTabs'); el.innerHTML='';
