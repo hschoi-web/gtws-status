@@ -11,12 +11,12 @@
     --bg:#ffffff;
     --panel:#ffffff;
     --ink:#1a1d24;
-    --muted:#8b909a;
-    --line:#eceef1;
-    --ink-2:#5a5f6a;
+    --muted:#6f757f;
+    --line:#d9dce2;
+    --ink-2:#464b55;
     --accent:#0068c8;
     --accent-2:#4d9fe8;
-    --track:#f0f1f4;
+    --track:#e6e8ed;
     --full:#00a35c;
     --danger:#ff3b30;
     --radius:12px;
@@ -49,7 +49,6 @@
   .refresh.spin svg{animation:spin .7s linear infinite}
   .refresh[disabled]{cursor:default;opacity:.75}
   @keyframes spin{to{transform:rotate(360deg)}}
-  .updnote{font-size:.74rem;color:var(--muted);margin-top:.3rem}
 
   .controls{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;
             margin:1.1rem 0 1.2rem;padding-bottom:1.1rem;border-bottom:1px solid var(--line)}
@@ -61,7 +60,7 @@
   .dir-tabs button{padding:.5rem .9rem;border:none;background:transparent;border-bottom:2px solid var(--line);
     font-family:inherit;font-size:.85rem;font-weight:700;color:var(--muted);cursor:pointer;transition:.15s}
   .dir-tabs button.active{color:var(--ink);border-bottom-color:var(--accent)}
-  .dir-tabs button.unavailable{opacity:.4}
+  .dir-tabs button.unavailable{opacity:.72}
   .dir-tabs button.unavailable:not(.active){color:var(--muted)}
 
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.7rem}
@@ -75,7 +74,18 @@
   .run .dep{font-size:.9rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.02em;width:3rem;flex-shrink:0}
   .run .bar{flex:1;height:7px;border-radius:99px;background:var(--track);overflow:hidden}
   .run .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
-  .run .pv{font-size:.82rem;font-weight:800;font-variant-numeric:tabular-nums;width:3.6rem;text-align:right;flex-shrink:0;color:var(--ink-2)}
+  .run .pv{font-size:.82rem;font-weight:800;font-variant-numeric:tabular-nums;width:3.6rem;text-align:right;flex-shrink:0;color:var(--ink-2);
+    position:relative;cursor:help}
+  /* %에 마우스오버 → 좌석수 툴팁 */
+  .run .pv::after{content:attr(data-seat);position:absolute;right:0;bottom:calc(100% + 7px);
+    background:var(--ink);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:0;
+    padding:.3rem .55rem;border-radius:7px;white-space:nowrap;pointer-events:none;
+    opacity:0;visibility:hidden;transition:opacity .12s;z-index:6}
+  .run .pv::before{content:'';position:absolute;right:.7rem;bottom:calc(100% + 2px);
+    border:5px solid transparent;border-top-color:var(--ink);pointer-events:none;
+    opacity:0;visibility:hidden;transition:opacity .12s;z-index:6}
+  .run .pv:hover::after,.run .pv:hover::before,
+  .run .pv:focus::after,.run .pv:focus::before{opacity:1;visibility:visible}
   .run.full .bar i{background:linear-gradient(90deg,var(--full),#5fb488)}
   .run.full .pv{color:var(--full)}
   .run.zero .pv{color:var(--muted)}
@@ -105,7 +115,6 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v4.5h-4.5"/></svg>
       </button>
     </div>
-    <div class="updnote" id="updNote">자동 업데이트 : 오전 9시, 오후 3시, 오후 9시 (총 3회)</div>
   </header>
 
   <div class="controls">
@@ -135,7 +144,7 @@ const STR = {
   ko: {
     title: '셔틀 예약현황',
     sub: '각 노선 최소 운행 인원(30명) 도달 시 운행이 확정됩니다.',
-    updLabel: '업데이트', updNote: '자동 업데이트 : 오전 9시, 오후 3시, 오후 9시 (총 3회)', refreshLabel: '새로고침',
+    updLabel: '업데이트', seatLabel: (b)=>`예약 ${b}석 / 최소 30석`, refreshLabel: '새로고침',
     dateLbl: {'10.23':'10.23 (금)','10.24':'10.24 (토)','10.25':'10.25 (일)'},
     dirLbl: {'행사장행':'행사장행 (무주 리조트행)','귀가행':'귀가행'},
     routeSuffix: ' 노선', avgLabel: '평균 ',
@@ -147,7 +156,7 @@ const STR = {
   en: {
     title: 'Shuttle Reservation Status',
     sub: 'Each route is confirmed once it reaches the minimum of 30 passengers.',
-    updLabel: 'Updated', updNote: 'Auto-updated 3× daily: 9 AM, 3 PM, 9 PM (KST)', refreshLabel: 'Refresh',
+    updLabel: 'Updated', seatLabel: (b)=>`${b} of 30 seats booked`, refreshLabel: 'Refresh',
     dateLbl: {'10.23':'Oct 23 (Fri)','10.24':'Oct 24 (Sat)','10.25':'Oct 25 (Sun)'},
     dirLbl: {'행사장행':'To Venue (Muju Resort)','귀가행':'Return'},
     routeSuffix: ' Route', avgLabel: 'Avg ',
@@ -172,7 +181,6 @@ function applyStaticText(){
   document.getElementById('h1Title').textContent = s.title;
   document.getElementById('subText').textContent = s.sub;
   document.getElementById('updLabel').textContent = s.updLabel;
-  document.getElementById('updNote').textContent = s.updNote;
   const rb = document.getElementById('refreshBtn');
   rb.setAttribute('aria-label', s.refreshLabel); rb.title = s.refreshLabel;
   document.getElementById('noteBox').innerHTML = s.note;
@@ -247,7 +255,7 @@ function renderRoutes(){
       runsHtml+=`<div class="run ${cls}">
         <span class="dep">${r.dep}</span>
         <span class="bar"><i style="width:${rate}%"></i></span>
-        <span class="pv">${fmtRate(rate)}%</span>
+        <span class="pv" tabindex="0" data-seat="${s.seatLabel(r.booked)}">${fmtRate(rate)}%</span>
       </div>`;
     });
     card.innerHTML=`
