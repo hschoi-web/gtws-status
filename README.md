@@ -1,31 +1,40 @@
-# GTWS 셔틀 예약현황 대시보드 — 배포 가이드
+# GTWS 셔틀 예약현황 대시보드
 
-노션 "GTWS 예약현황" DB → `status.json` 자동 생성 → GitHub Pages 대시보드.
-n8n·별도 서버 없이 **GitHub 하나로** 돌아갑니다.
+라이더스 어드민 예약 리포트 → `status.json` 자동 생성 → GitHub Pages 대시보드.
+별도 서버 없이 **GitHub 하나로** 돌아갑니다.
+
+라이브: https://hschoi-web.github.io/gtws-status/
+
+## 원천 데이터 (2026-08-06 교체)
+
+- **현재**: https://admin.rideus.net/shuttlebus-report/gtws — 서버 렌더 HTML, **인증 불필요**.
+- ~~이전: 노션 "GTWS 예약현황" DB (`NOTION_TOKEN` 필요)~~ → 더 이상 쓰지 않음. 시크릿도 불필요.
+
+어드민 표는 **운행 시간표 전체**를 담고 있습니다.
+- 그 시각에 정차하지 않는 탑승지 = `-`, 정차하면 숫자(0 포함)
+  → 예약 0인 회차도 시간표대로 노출됩니다(노션 방식은 예약>0인 시각만 알 수 있어 시간표가 누락됐음).
+- 탑승지 칸은 (예약자, 좌석) 2칸. 달성률의 "최소 운행 인원"은 실제 탑승 인원이므로 **좌석** 값을 씁니다.
 
 ## 파일
-- `index.html` — 대시보드(라이브 모드). `./status.json`을 fetch, 10분마다 갱신. `?demo=1` 붙이면 데모 데이터.
-- `status.json` — 예약 집계 결과(달성률 계산용). **이미 오늘자 실데이터로 채워져 있음.**
-- `build_status.mjs` — 노션 두 DB(무주리조트행/귀가행)의 **최신 조회일** 행 → status.json 생성.
+
+- `index.html` — 대시보드. `./status.json`(ko) + `./status-en.json`(en)을 fetch. 둘 중 하나라도 없으면
+  내장 데모 데이터로 폴백하므로 **두 파일이 모두 있어야 실데이터가 뜹니다.**
+- `status.json` / `status-en.json` — 예약 집계 결과(달성률 계산용). 워크플로우가 매일 덮어씀.
+- `build_status.mjs` — 어드민 리포트 HTML 파싱 → 두 json 생성.
 - `.github/workflows/refresh-status.yml` — 매일 09:05 KST 자동 실행 + 수동 실행 버튼.
 
-## 설치 (5분)
-1. **새 repo 생성** (예: `gtws-status`) 후 이 폴더의 파일들을 그대로 올림
-   (`.github/workflows/refresh-status.yml` 경로 유지).
-2. **Settings > Pages** → Source: `Deploy from a branch`, Branch: `main` / `/(root)` → 저장.
-   → `https://<계정>.github.io/gtws-status/` 에 대시보드 표시. 이 주소를 gtws.rideus.net에 링크.
-3. **Settings > Secrets and variables > Actions > New repository secret**
-   - Name: `NOTION_TOKEN`
-   - Value: 노션 내부통합 토큰 (마케팅 자동화에서 쓰던 `ntn_…` 그대로)
-4. **노션 공유 확인**: "GTWS 예약현황" 페이지 우측 상단 ⋯ > 연결(Connections) 에 그 통합이 추가돼 있어야 함
-   (이미 접근되는 것 확인함 — 안 되면 통합 추가).
-5. **Actions 탭 > refresh-status > Run workflow** 로 수동 1회 실행 → status.json 갱신 확인.
+## 회차 묶는 규칙
 
-이후 매일 09:05(KST) 자동으로 status.json이 갱신·커밋됩니다.
+- **행사장행(하행선)**: 한 버스가 여러 정류장을 순회하므로, 같은 노선 안에서 정류장이 서로 다르고
+  간격이 120분 이내면 한 회차로 합산 (예: 종합운동장역 12:00 + 천호역 12:20 = 1회차).
+- **귀가행(상행선)**: 리조트 출발시각이 곧 회차 기준이라 묶지 않고 시각별로 1회차.
+- 달성률 = `min(100, booked/30*100)`, 전 노선 최소 30명.
 
-## 참고
-- 달성률 = `min(100, round(booked/30*100))`, 전 노선 최소 30명.
-- 회차 booked = 그 출발시각의 경유 탑승지 예약 합(ROUTE_MAP, build_status.mjs 참고).
-- 현재는 각 노선에 **전체 출발시각이 모두** 표시됩니다(예약 0인 회차 포함). 노선별 실제 운행시각만
-  보이게 하려면 예약 0 회차를 숨기는 옵션을 넣을 수 있음(요청 시 반영).
-- 실행 주기 단축: yml의 cron + index.html의 setInterval 값 동시 조정.
+## 유지보수
+
+- **탑승지가 추가/변경되면** `build_status.mjs`의 `STOPS` 표에 추가해야 합니다.
+  등록되지 않은 탑승지가 어드민 표에 나타나면 빌드가 에러로 멈추므로(조용히 누락되지 않음)
+  Actions 실패 알림을 보고 대응하면 됩니다.
+- **시각 추가는 대응 불필요** — 시간표를 원천에서 그대로 읽으므로 자동 반영됩니다.
+- 로컬 실행: `node build_status.mjs` (환경변수 없이 그대로 실행)
+- 실행 주기 단축: yml의 cron 조정.

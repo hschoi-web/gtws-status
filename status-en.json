@@ -6,8 +6,8 @@
  "days": {
   "10.23": {
    "행사장행": {
-    "대전": {
-     "stops": "KTX대전역",
+    "Daejeon": {
+     "stops": "KTX Daejeon Station",
      "runs": [
       {
        "run": "1회차",
@@ -27,8 +27,8 @@
       }
      ]
     },
-    "무주 터미널": {
-     "stops": "무주공용터미널 맞은편 폭포 광장",
+    "Muju Terminal": {
+     "stops": "Muju Public Bus Terminal",
      "runs": [
       {
        "run": "1회차",
@@ -72,8 +72,8 @@
       }
      ]
     },
-    "천안/세종": {
-     "stops": "천안 신세계백화점+세종 BRT환승센터 맞은편",
+    "Cheonan / Sejong": {
+     "stops": "Shinsegae Dept. Store, Cheonan+BRT Transfer Center, Sejong",
      "runs": [
       {
        "run": "1회차",
@@ -95,8 +95,8 @@
       }
      ]
     },
-    "광주": {
-     "stops": "광주 유스퀘어 맞은편",
+    "Gwangju": {
+     "stops": "U-Square, Gwangju",
      "runs": [
       {
        "run": "1회차",
@@ -116,8 +116,8 @@
       }
      ]
     },
-    "서울역": {
-     "stops": "서울역 13번 출구",
+    "Seoul Station": {
+     "stops": "Seoul Station",
      "runs": [
       {
        "run": "1회차",
@@ -145,8 +145,8 @@
       }
      ]
     },
-    "종합운동장역": {
-     "stops": "종합운동장역 7번 출구+천호역 7번 출구",
+    "Sports Complex / Cheonho": {
+     "stops": "Sports Complex Station Exit 7+Cheonho Station Exit 7",
      "runs": [
       {
        "run": "1회차",
@@ -177,8 +177,8 @@
       }
      ]
     },
-    "상봉역": {
-     "stops": "상봉역 1번 출구",
+    "Sangbong Station": {
+     "stops": "Sangbong Station Exit 1",
      "runs": [
       {
        "run": "1회차",
@@ -198,8 +198,8 @@
       }
      ]
     },
-    "인천": {
-     "stops": "인천국제공항 T2+인천국제공항 T1+원인재역 1번 출구",
+    "Incheon": {
+     "stops": "Incheon Airport T2+Incheon Airport T1+Woninjae Station Exit 1",
      "runs": [
       {
        "run": "1회차",
@@ -223,8 +223,8 @@
       }
      ]
     },
-    "고양/김포": {
-     "stops": "백석역 2번 출구+김포국제공항 국제선",
+    "Goyang / Gimpo": {
+     "stops": "Baekseok Station Exit 2+Gimpo Airport (Int'l)",
      "runs": [
       {
        "run": "1회차",
@@ -246,8 +246,8 @@
       }
      ]
     },
-    "의정부": {
-     "stops": "의정부역 지하상가 6번출구+별내역 2번 출구",
+    "Uijeongbu / Namyangju": {
+     "stops": "Uijeongbu Station Underground Mall Exit 6+Byeollae Station Exit 2",
      "runs": [
       {
        "run": "1회차",
@@ -269,8 +269,8 @@
       }
      ]
     },
-    "부산": {
-     "stops": "부산역 지하철 4번 출구",
+    "Busan": {
+     "stops": "Busan Station Exit 4",
      "runs": [
       {
        "run": "1회차",
@@ -290,8 +290,8 @@
       }
      ]
     },
-    "울산/대구": {
-     "stops": "울산 태화로터리+대구 콘서트하우스",
+    "Ulsan / Daegu": {
+     "stops": "Taehwa Rotary, Ulsan+Daegu Concert House",
      "runs": [
       {
        "run": "1회차",
@@ -313,8 +313,8 @@
       }
      ]
     },
-    "강릉/원주": {
-     "stops": "KTX강릉역+원주 치악예술관",
+    "Gangneung / Wonju": {
+     "stops": "KTX Gangneung Station+Chiak Art Center, Wonju",
      "runs": [
       {
        "run": "1회차",
@@ -358,8 +358,8 @@
   },
   "10.24": {
    "행사장행": {
-    "대전": {
-     "stops": "KTX대전역",
+    "Daejeon": {
+     "stops": "KTX Daejeon Station",
      "runs": [
       {
        "run": "1회차",
@@ -387,8 +387,8 @@
       }
      ]
     },
-    "무주 터미널": {
-     "stops": "무주공용터미널 맞은편 폭포 광장",
+    "Muju Terminal": {
+     "stops": "Muju Public Bus Terminal",
      "runs": [
       {
        "run": "1회차",
@@ -448,8 +448,8 @@
       }
      ]
     },
-    "천안/세종": {
-     "stops": "천안 신세계백화점+세종 BRT환승센터 맞은편",
+    "Cheonan / Sejong": {
+     "stops": "Shinsegae Dept. Store, Cheonan+BRT Transfer Center, Sejong",
      "runs": [
       {
        "run": "1회차",
@@ -480,8 +480,8 @@
       }
      ]
     },
-    "광주": {
-     "stops": "광주 유스퀘어 맞은편",
+    "Gwangju": {
+     "stops": "U-Square, Gwangju",
      "runs": [
       {
        "run": "1회차",
@@ -509,8 +509,8 @@
       }
      ]
     },
-    "서울역": {
-     "stops": "서울역 13번 출구",
+    "Seoul Station": {
+     "stops": "Seoul Station",
      "runs": [
       {
        "run": "1회차",
@@ -546,8 +546,8 @@
       }
      ]
     },
-    "종합운동장역": {
-     "stops": "종합운동장역 7번 출구+천호역 7번 출구",
+    "Sports Complex / Cheonho": {
+     "stops": "Sports Complex Station Exit 7+Cheonho Station Exit 7",
      "runs": [
       {
        "run": "1회차",
@@ -587,8 +587,8 @@
       }
      ]
     },
-    "상봉역": {
-     "stops": "상봉역 1번 출구",
+    "Sangbong Station": {
+     "stops": "Sangbong Station Exit 1",
      "runs": [
       {
        "run": "1회차",
@@ -624,8 +624,8 @@
       }
      ]
     },
-    "인천": {
-     "stops": "인천국제공항 T2+인천국제공항 T1+원인재역 1번 출구",
+    "Incheon": {
+     "stops": "Incheon Airport T2+Incheon Airport T1+Woninjae Station Exit 1",
      "runs": [
       {
        "run": "1회차",
@@ -659,8 +659,8 @@
       }
      ]
     },
-    "고양/김포": {
-     "stops": "백석역 2번 출구+김포국제공항 국제선",
+    "Goyang / Gimpo": {
+     "stops": "Baekseok Station Exit 2+Gimpo Airport (Int'l)",
      "runs": [
       {
        "run": "1회차",
@@ -691,8 +691,8 @@
       }
      ]
     },
-    "의정부": {
-     "stops": "의정부역 지하상가 6번출구+별내역 2번 출구",
+    "Uijeongbu / Namyangju": {
+     "stops": "Uijeongbu Station Underground Mall Exit 6+Byeollae Station Exit 2",
      "runs": [
       {
        "run": "1회차",
@@ -723,8 +723,8 @@
       }
      ]
     },
-    "부산": {
-     "stops": "부산역 지하철 4번 출구",
+    "Busan": {
+     "stops": "Busan Station Exit 4",
      "runs": [
       {
        "run": "1회차",
@@ -752,8 +752,8 @@
       }
      ]
     },
-    "울산/대구": {
-     "stops": "울산 태화로터리+대구 콘서트하우스",
+    "Ulsan / Daegu": {
+     "stops": "Taehwa Rotary, Ulsan+Daegu Concert House",
      "runs": [
       {
        "run": "1회차",
@@ -784,8 +784,8 @@
       }
      ]
     },
-    "강릉/원주": {
-     "stops": "KTX강릉역+원주 치악예술관",
+    "Gangneung / Wonju": {
+     "stops": "KTX Gangneung Station+Chiak Art Center, Wonju",
      "runs": [
       {
        "run": "1회차",
@@ -818,8 +818,8 @@
     }
    },
    "귀가행": {
-    "대전": {
-     "stops": "KTX대전역",
+    "Daejeon": {
+     "stops": "KTX Daejeon Station",
      "runs": [
       {
        "run": "1회차",
@@ -855,8 +855,8 @@
       }
      ]
     },
-    "무주 터미널": {
-     "stops": "무주공용터미널 맞은편 폭포 광장",
+    "Muju Terminal": {
+     "stops": "Muju Public Bus Terminal",
      "runs": [
       {
        "run": "1회차",
@@ -876,8 +876,8 @@
       }
      ]
     },
-    "천안/세종": {
-     "stops": "천안 신세계백화점",
+    "Cheonan / Sejong": {
+     "stops": "Shinsegae Dept. Store, Cheonan",
      "runs": [
       {
        "run": "1회차",
@@ -913,8 +913,8 @@
       }
      ]
     },
-    "광주": {
-     "stops": "광주 유스퀘어 맞은편",
+    "Gwangju": {
+     "stops": "U-Square, Gwangju",
      "runs": [
       {
        "run": "1회차",
@@ -934,8 +934,8 @@
       }
      ]
     },
-    "서울역": {
-     "stops": "서울역 13번 출구",
+    "Seoul Station": {
+     "stops": "Seoul Station",
      "runs": [
       {
        "run": "1회차",
@@ -955,8 +955,8 @@
       }
      ]
     },
-    "종합운동장역": {
-     "stops": "종합운동장역 7번 출구+천호역 7번 출구",
+    "Sports Complex / Cheonho": {
+     "stops": "Sports Complex Station Exit 7+Cheonho Station Exit 7",
      "runs": [
       {
        "run": "1회차",
@@ -976,8 +976,8 @@
       }
      ]
     },
-    "상봉역": {
-     "stops": "상봉역 1번 출구",
+    "Sangbong Station": {
+     "stops": "Sangbong Station Exit 1",
      "runs": [
       {
        "run": "1회차",
@@ -997,8 +997,8 @@
       }
      ]
     },
-    "인천": {
-     "stops": "인천국제공항 T2+인천국제공항 T1+원인재역 1번 출구",
+    "Incheon": {
+     "stops": "Incheon Airport T2+Incheon Airport T1+Woninjae Station Exit 1",
      "runs": [
       {
        "run": "1회차",
@@ -1018,8 +1018,8 @@
       }
      ]
     },
-    "고양/김포": {
-     "stops": "백석역 2번 출구+김포국제공항 국제선",
+    "Goyang / Gimpo": {
+     "stops": "Baekseok Station Exit 2+Gimpo Airport (Int'l)",
      "runs": [
       {
        "run": "1회차",
@@ -1039,8 +1039,8 @@
       }
      ]
     },
-    "의정부": {
-     "stops": "의정부역 지하상가 6번출구+별내역 2번 출구",
+    "Uijeongbu / Namyangju": {
+     "stops": "Uijeongbu Station Underground Mall Exit 6+Byeollae Station Exit 2",
      "runs": [
       {
        "run": "1회차",
@@ -1060,8 +1060,8 @@
       }
      ]
     },
-    "부산": {
-     "stops": "부산역 지하철 4번 출구",
+    "Busan": {
+     "stops": "Busan Station Exit 4",
      "runs": [
       {
        "run": "1회차",
@@ -1081,8 +1081,8 @@
       }
      ]
     },
-    "울산/대구": {
-     "stops": "울산 태화로터리+대구 콘서트하우스",
+    "Ulsan / Daegu": {
+     "stops": "Taehwa Rotary, Ulsan+Daegu Concert House",
      "runs": [
       {
        "run": "1회차",
@@ -1102,8 +1102,8 @@
       }
      ]
     },
-    "강릉/원주": {
-     "stops": "KTX강릉역+원주 치악예술관",
+    "Gangneung / Wonju": {
+     "stops": "KTX Gangneung Station+Chiak Art Center, Wonju",
      "runs": [
       {
        "run": "1회차",
@@ -1127,8 +1127,8 @@
   },
   "10.25": {
    "행사장행": {
-    "대전": {
-     "stops": "KTX대전역",
+    "Daejeon": {
+     "stops": "KTX Daejeon Station",
      "runs": [
       {
        "run": "1회차",
@@ -1148,8 +1148,8 @@
       }
      ]
     },
-    "무주 터미널": {
-     "stops": "무주공용터미널 맞은편 폭포 광장",
+    "Muju Terminal": {
+     "stops": "Muju Public Bus Terminal",
      "runs": [
       {
        "run": "1회차",
@@ -1177,8 +1177,8 @@
       }
      ]
     },
-    "천안/세종": {
-     "stops": "천안 신세계백화점+세종 BRT환승센터 맞은편",
+    "Cheonan / Sejong": {
+     "stops": "Shinsegae Dept. Store, Cheonan+BRT Transfer Center, Sejong",
      "runs": [
       {
        "run": "1회차",
@@ -1200,8 +1200,8 @@
       }
      ]
     },
-    "광주": {
-     "stops": "광주 유스퀘어 맞은편",
+    "Gwangju": {
+     "stops": "U-Square, Gwangju",
      "runs": [
       {
        "run": "1회차",
@@ -1221,8 +1221,8 @@
       }
      ]
     },
-    "서울역": {
-     "stops": "서울역 13번 출구",
+    "Seoul Station": {
+     "stops": "Seoul Station",
      "runs": [
       {
        "run": "1회차",
@@ -1242,8 +1242,8 @@
       }
      ]
     },
-    "종합운동장역": {
-     "stops": "종합운동장역 7번 출구+천호역 7번 출구",
+    "Sports Complex / Cheonho": {
+     "stops": "Sports Complex Station Exit 7+Cheonho Station Exit 7",
      "runs": [
       {
        "run": "1회차",
@@ -1265,8 +1265,8 @@
       }
      ]
     },
-    "상봉역": {
-     "stops": "상봉역 1번 출구",
+    "Sangbong Station": {
+     "stops": "Sangbong Station Exit 1",
      "runs": [
       {
        "run": "1회차",
@@ -1286,8 +1286,8 @@
       }
      ]
     },
-    "인천": {
-     "stops": "인천국제공항 T2+인천국제공항 T1+원인재역 1번 출구",
+    "Incheon": {
+     "stops": "Incheon Airport T2+Incheon Airport T1+Woninjae Station Exit 1",
      "runs": [
       {
        "run": "1회차",
@@ -1311,8 +1311,8 @@
       }
      ]
     },
-    "고양/김포": {
-     "stops": "백석역 2번 출구+김포국제공항 국제선",
+    "Goyang / Gimpo": {
+     "stops": "Baekseok Station Exit 2+Gimpo Airport (Int'l)",
      "runs": [
       {
        "run": "1회차",
@@ -1334,8 +1334,8 @@
       }
      ]
     },
-    "의정부": {
-     "stops": "의정부역 지하상가 6번출구+별내역 2번 출구",
+    "Uijeongbu / Namyangju": {
+     "stops": "Uijeongbu Station Underground Mall Exit 6+Byeollae Station Exit 2",
      "runs": [
       {
        "run": "1회차",
@@ -1357,8 +1357,8 @@
       }
      ]
     },
-    "부산": {
-     "stops": "부산역 지하철 4번 출구",
+    "Busan": {
+     "stops": "Busan Station Exit 4",
      "runs": [
       {
        "run": "1회차",
@@ -1378,8 +1378,8 @@
       }
      ]
     },
-    "울산/대구": {
-     "stops": "울산 태화로터리+대구 콘서트하우스",
+    "Ulsan / Daegu": {
+     "stops": "Taehwa Rotary, Ulsan+Daegu Concert House",
      "runs": [
       {
        "run": "1회차",
@@ -1401,8 +1401,8 @@
       }
      ]
     },
-    "강릉/원주": {
-     "stops": "KTX강릉역+원주 치악예술관",
+    "Gangneung / Wonju": {
+     "stops": "KTX Gangneung Station+Chiak Art Center, Wonju",
      "runs": [
       {
        "run": "1회차",
@@ -1417,8 +1417,8 @@
     }
    },
    "귀가행": {
-    "대전": {
-     "stops": "KTX대전역",
+    "Daejeon": {
+     "stops": "KTX Daejeon Station",
      "runs": [
       {
        "run": "1회차",
@@ -1454,8 +1454,8 @@
       }
      ]
     },
-    "무주 터미널": {
-     "stops": "무주공용터미널 맞은편 폭포 광장",
+    "Muju Terminal": {
+     "stops": "Muju Public Bus Terminal",
      "runs": [
       {
        "run": "1회차",
@@ -1475,8 +1475,8 @@
       }
      ]
     },
-    "천안/세종": {
-     "stops": "천안 신세계백화점",
+    "Cheonan / Sejong": {
+     "stops": "Shinsegae Dept. Store, Cheonan",
      "runs": [
       {
        "run": "1회차",
@@ -1512,8 +1512,8 @@
       }
      ]
     },
-    "광주": {
-     "stops": "광주 유스퀘어 맞은편",
+    "Gwangju": {
+     "stops": "U-Square, Gwangju",
      "runs": [
       {
        "run": "1회차",
@@ -1533,8 +1533,8 @@
       }
      ]
     },
-    "서울역": {
-     "stops": "서울역 13번 출구",
+    "Seoul Station": {
+     "stops": "Seoul Station",
      "runs": [
       {
        "run": "1회차",
@@ -1554,8 +1554,8 @@
       }
      ]
     },
-    "종합운동장역": {
-     "stops": "종합운동장역 7번 출구+천호역 7번 출구",
+    "Sports Complex / Cheonho": {
+     "stops": "Sports Complex Station Exit 7+Cheonho Station Exit 7",
      "runs": [
       {
        "run": "1회차",
@@ -1575,8 +1575,8 @@
       }
      ]
     },
-    "상봉역": {
-     "stops": "상봉역 1번 출구",
+    "Sangbong Station": {
+     "stops": "Sangbong Station Exit 1",
      "runs": [
       {
        "run": "1회차",
@@ -1596,8 +1596,8 @@
       }
      ]
     },
-    "인천": {
-     "stops": "인천국제공항 T2+인천국제공항 T1+원인재역 1번 출구",
+    "Incheon": {
+     "stops": "Incheon Airport T2+Incheon Airport T1+Woninjae Station Exit 1",
      "runs": [
       {
        "run": "1회차",
@@ -1617,8 +1617,8 @@
       }
      ]
     },
-    "고양/김포": {
-     "stops": "백석역 2번 출구+김포국제공항 국제선",
+    "Goyang / Gimpo": {
+     "stops": "Baekseok Station Exit 2+Gimpo Airport (Int'l)",
      "runs": [
       {
        "run": "1회차",
@@ -1638,8 +1638,8 @@
       }
      ]
     },
-    "의정부": {
-     "stops": "의정부역 지하상가 6번출구+별내역 2번 출구",
+    "Uijeongbu / Namyangju": {
+     "stops": "Uijeongbu Station Underground Mall Exit 6+Byeollae Station Exit 2",
      "runs": [
       {
        "run": "1회차",
@@ -1659,8 +1659,8 @@
       }
      ]
     },
-    "부산": {
-     "stops": "부산역 지하철 4번 출구",
+    "Busan": {
+     "stops": "Busan Station Exit 4",
      "runs": [
       {
        "run": "1회차",
@@ -1680,8 +1680,8 @@
       }
      ]
     },
-    "울산/대구": {
-     "stops": "울산 태화로터리+대구 콘서트하우스",
+    "Ulsan / Daegu": {
+     "stops": "Taehwa Rotary, Ulsan+Daegu Concert House",
      "runs": [
       {
        "run": "1회차",
@@ -1701,8 +1701,8 @@
       }
      ]
     },
-    "강릉/원주": {
-     "stops": "KTX강릉역+원주 치악예술관",
+    "Gangneung / Wonju": {
+     "stops": "KTX Gangneung Station+Chiak Art Center, Wonju",
      "runs": [
       {
        "run": "1회차",
