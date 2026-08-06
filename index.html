@@ -75,8 +75,10 @@
   .run .bar{flex:1;height:7px;border-radius:99px;background:var(--track);overflow:hidden}
   .run .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
   .run .pv{font-size:.82rem;font-weight:800;font-variant-numeric:tabular-nums;width:3.6rem;text-align:right;flex-shrink:0;color:var(--ink-2);
-    position:relative;cursor:help}
-  /* %에 마우스오버 → 좌석수 툴팁 */
+    position:relative;cursor:help;
+    text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:3px;
+    text-decoration-color:var(--muted);-webkit-tap-highlight-color:transparent}
+  /* %에 마우스오버(PC) / 터치(모바일) → 좌석수 툴팁 */
   .run .pv::after{content:attr(data-seat);position:absolute;right:0;bottom:calc(100% + 7px);
     background:var(--ink);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:0;
     padding:.3rem .55rem;border-radius:7px;white-space:nowrap;pointer-events:none;
@@ -85,7 +87,9 @@
     border:5px solid transparent;border-top-color:var(--ink);pointer-events:none;
     opacity:0;visibility:hidden;transition:opacity .12s;z-index:6}
   .run .pv:hover::after,.run .pv:hover::before,
-  .run .pv:focus::after,.run .pv:focus::before{opacity:1;visibility:visible}
+  .run .pv:focus::after,.run .pv:focus::before,
+  .run .pv.show::after,.run .pv.show::before{opacity:1;visibility:visible}
+  .run .pv.show{text-decoration-color:var(--ink)}
   .run.full .bar i{background:linear-gradient(90deg,var(--full),#5fb488)}
   .run.full .pv{color:var(--full)}
   .run.zero .pv{color:var(--muted)}
@@ -277,6 +281,13 @@ function renderDayNotice(){
 }
 
 function renderAll(){ applyStaticText(); renderDates(); renderDirTabs(); renderDayNotice(); renderRoutes(); }
+
+/* 모바일: 호버가 없으므로 %를 탭하면 좌석수 툴팁 표시(다시 탭하거나 바깥 탭하면 닫힘) */
+document.addEventListener('click', e=>{
+  const pv = e.target.closest('.run .pv');
+  document.querySelectorAll('.run .pv.show').forEach(el=>{ if(el!==pv) el.classList.remove('show'); });
+  if(pv) pv.classList.toggle('show');
+});
 
 document.getElementById('langToggle').addEventListener('click', e=>{
   const btn = e.target.closest('button'); if(!btn) return;
