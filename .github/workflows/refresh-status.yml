@@ -3,7 +3,7 @@ name: refresh-status
 # 2026-08-06 원천 교체: 노션 DB → https://admin.rideus.net/shuttlebus-report/gtws (인증 불필요, NOTION_TOKEN 사용 안 함)
 on:
   schedule:
-    - cron: '5 0 * * *'      # 00:05 UTC = 09:05 KST
+    - cron: '5 0,6,12 * * *'  # 00:05 / 06:05 / 12:05 UTC = 09:05 / 15:05 / 21:05 KST (1일 3회)
   workflow_dispatch: {}       # 수동 실행 버튼
 
 permissions:
