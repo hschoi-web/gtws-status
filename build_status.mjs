@@ -113,7 +113,12 @@ const mins = t => { const m = String(t).match(/(\d+):(\d+)/); return m ? +m[1] *
 //
 // 날짜 경계를 넘어서도 묶음: 심야편은 원천에서 탑승일이 갈려 기록됨
 // (예: KTX강릉역 10.23 23:00 → 원주 치악예술관 10.24 00:40 = 한 대). 절대 분(날짜×1440+시각)으로
-// 한 줄에 세워 묶고, 회차는 **첫 출발 날짜**에 귀속시킨다.
+// 한 줄에 세워 묶는다.
+//
+// 회차 귀속 날짜 = **마지막 정류장(=도착 쪽) 날짜** (olivia 확정 2026-08-06).
+// 밤 버스는 타는 날이 아니라 **행사 당일(도착일)** 시간표에 있어야 한다. gtws 예약페이지도 이 기준.
+// 예: 강릉 10.23 23:00 → 원주 10.24 00:40 은 **10.24 시간표**에 23:00으로 표기.
+// (표시되는 dep 은 그대로 첫 출발시각 23:00 — 예약페이지와 동일)
 function groupRuns(rows, stopSrcs, merge, dateIdx) {
   const perTime = [];
   for (const r of rows) {
@@ -130,12 +135,25 @@ function groupRuns(rows, stopSrcs, merge, dateIdx) {
     const overlap = g && keys.some(s => g.stopSet.has(s));
     const close = merge && g && (pt.abs - g.lastAbs <= GAP_MIN);
     if (g && close && !overlap) {
-      g.booked += pt.tot; g.lastAbs = pt.abs; g.deps.push(pt.dep); keys.forEach(s => g.stopSet.add(s));
+      g.booked += pt.tot; g.lastAbs = pt.abs; g.lastDate = pt.date;   // 도착 쪽 날짜로 갱신
+      g.deps.push(pt.dep); keys.forEach(s => g.stopSet.add(s));
     } else {
-      groups.push({ date: pt.date, dep: pt.dep, deps: [pt.dep], booked: pt.tot, lastAbs: pt.abs, stopSet: new Set(keys) });
+      groups.push({ startDate: pt.date, lastDate: pt.date, dep: pt.dep, deps: [pt.dep], booked: pt.tot, lastAbs: pt.abs, stopSet: new Set(keys) });
     }
   }
-  return groups.map(g => ({ date: g.date, dep: g.dep, deps: g.deps, booked: g.booked }));
+  // 원천 범위 밖(첫날 이전 밤) 출발편의 '꼬리' 제거.
+  // 리포트는 행사 기간(10.23~25) 탑승분만 담는다. 첫날 새벽에 뒤쪽 정류장만 단독으로 찍힌 회차는
+  // 전날 밤 출발편의 뒷부분인데 그 출발편이 리포트에 없는 것 → 실제로는 운행하지 않는 유령 회차.
+  // (예: 원주 치악예술관 10.23 00:40 단독 — 짝이 될 강릉 10.22 23:00 이 원천에 없음.
+  //  올리비아 확인 2026-08-06 "행사가 23일부터야. 22일 밤 출발하는 강릉 노선은 하나도 없다")
+  // 첫날이 아닌 날의 심야편(서울역 10.24 00:00 등)은 정상 회차이므로 건드리지 않는다.
+  const firstDate = [...dateIdx.entries()].find(([, i]) => i === 0)?.[0];
+  const kept = groups.filter(g => {
+    const isTail = merge && g.lastDate === firstDate && mins(g.dep) < 300 && !g.stopSet.has(stopSrcs[0]);
+    if (isTail) console.warn(`  · 제외(원천 범위 밖 꼬리): ${g.lastDate} ${g.dep} [${[...g.stopSet].join(", ")}] ${g.booked}석`);
+    return !isTail;
+  });
+  return kept.map(g => ({ date: g.lastDate, dep: g.dep, deps: g.deps, booked: g.booked, prev: g.startDate !== g.lastDate }));
 }
 
 /* ---------------- 빌드 ---------------- */
@@ -163,7 +181,7 @@ function build(byDir, lang) {
 
       for (const g of groupRuns(rows, stops.map(s => s.src), dir === "행사장행", dateIdx)) {
         const card = days[g.date][dir][label];
-        card.runs.push({ run: `${card.runs.length + 1}회차`, dep: g.dep, deps: g.deps, booked: g.booked });
+        card.runs.push({ run: `${card.runs.length + 1}회차`, dep: g.dep, deps: g.deps, booked: g.booked, ...(g.prev ? { prev: true } : {}) });
       }
     }
   }

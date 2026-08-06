@@ -71,6 +71,7 @@
 
   .runs{margin-top:.7rem;display:flex;flex-direction:column;gap:.5rem}
   .run{display:flex;align-items:center;gap:.65rem}
+  .run .dep .prevday{display:block;font-size:.58rem;font-weight:700;font-style:normal;color:var(--muted);letter-spacing:0;margin-top:-.1rem}
   .run .dep{font-size:.9rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:.02em;width:3rem;flex-shrink:0}
   .run .bar{flex:1;height:7px;border-radius:99px;background:var(--track);overflow:hidden}
   .run .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
@@ -151,7 +152,7 @@ const STR = {
     updLabel: '업데이트', seatLabel: (b)=>`예약 ${b}석 / 최소 30석`, refreshLabel: '새로고침',
     dateLbl: {'10.23':'10.23 (금)','10.24':'10.24 (토)','10.25':'10.25 (일)'},
     dirLbl: {'행사장행':'행사장행 (무주 리조트행)','귀가행':'귀가행'},
-    routeSuffix: ' 노선', avgLabel: '평균 ',
+    routeSuffix: ' 노선', avgLabel: '평균 ', prevDay: '전날',
     note: '※ <b>달성률(%)</b>은 실제 예약 인원·잔여 좌석과는 다릅니다. 최소 인원 미달 노선은 출발 전 사전 취소될 수 있습니다.',
     noDirNotice: { '10.23': '10월 23일은 귀가행을 운행하지 않습니다.' },
     footer: '문의 <a href="mailto:ops@rideus.net">ops@rideus.net</a> (셔틀 문의 전용) · 운영 09:00–18:00 (주말·공휴일 휴무)<br>예약 <a href="https://gtws.rideus.net/gtws">gtws.rideus.net</a> · © GroundK · RIDEUS',
@@ -163,7 +164,7 @@ const STR = {
     updLabel: 'Updated', seatLabel: (b)=>`${b} of 30 seats booked`, refreshLabel: 'Refresh',
     dateLbl: {'10.23':'Oct 23 (Fri)','10.24':'Oct 24 (Sat)','10.25':'Oct 25 (Sun)'},
     dirLbl: {'행사장행':'To Venue (Muju Resort)','귀가행':'Return'},
-    routeSuffix: ' Route', avgLabel: 'Avg ',
+    routeSuffix: ' Route', avgLabel: 'Avg ', prevDay: 'prev. day',
     note: '※ The <b>achievement rate (%)</b> differs from the actual number of reservations and remaining seats. Routes that do not reach the minimum may be cancelled before departure.',
     noDirNotice: { '10.23': 'No return shuttle operates on October 23.' },
     footer: 'Contact <a href="mailto:ops@rideus.net">ops@rideus.net</a> (shuttle inquiries only) · Hours 09:00–18:00 (closed weekends/holidays)<br>Booking <a href="https://gtws.rideus.net/en/gtws">gtws.rideus.net</a> · © GroundK · RIDEUS',
@@ -257,7 +258,7 @@ function renderRoutes(){
       const rate=rateOf(r.booked);
       const cls=rate>=100?'full':(rate===0?'zero':'');
       runsHtml+=`<div class="run ${cls}">
-        <span class="dep">${r.dep}</span>
+        <span class="dep">${r.dep}${r.prev?`<i class="prevday">${s.prevDay}</i>`:''}</span>
         <span class="bar"><i style="width:${rate}%"></i></span>
         <span class="pv" tabindex="0" data-seat="${s.seatLabel(r.booked)}">${fmtRate(rate)}%</span>
       </div>`;
