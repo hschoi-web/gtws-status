@@ -153,7 +153,7 @@ function groupRuns(rows, stopSrcs, merge, dateIdx) {
     if (isTail) console.warn(`  · 제외(원천 범위 밖 꼬리): ${g.lastDate} ${g.dep} [${[...g.stopSet].join(", ")}] ${g.booked}석`);
     return !isTail;
   });
-  return kept.map(g => ({ date: g.lastDate, dep: g.dep, deps: g.deps, booked: g.booked, prev: g.startDate !== g.lastDate }));
+  return kept.map(g => ({ date: g.lastDate, dep: g.dep, deps: g.deps, booked: g.booked, prev: g.startDate !== g.lastDate, prevDate: g.startDate }));
 }
 
 /* ---------------- 빌드 ---------------- */
@@ -181,7 +181,7 @@ function build(byDir, lang) {
 
       for (const g of groupRuns(rows, stops.map(s => s.src), dir === "행사장행", dateIdx)) {
         const card = days[g.date][dir][label];
-        card.runs.push({ run: `${card.runs.length + 1}회차`, dep: g.dep, deps: g.deps, booked: g.booked, ...(g.prev ? { prev: true } : {}) });
+        card.runs.push({ run: `${card.runs.length + 1}회차`, dep: g.dep, deps: g.deps, booked: g.booked, ...(g.prev ? { prev: true, prevDate: g.prevDate } : {}) });
       }
     }
   }
