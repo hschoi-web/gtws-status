@@ -3,7 +3,9 @@ name: refresh-status
 # 2026-08-06 원천 교체: 노션 DB → https://admin.rideus.net/shuttlebus-report/gtws (인증 불필요, NOTION_TOKEN 사용 안 함)
 on:
   schedule:
-    - cron: '5 0,6,12 * * *'  # 00:05 / 06:05 / 12:05 UTC = 09:05 / 15:05 / 21:05 KST (1일 3회)
+    # 20분마다 (KST 07:00~23:59). 어드민 리포트는 실시간 예약 반영이라 1일 3회로는
+    # 운영자가 어드민 화면과 대조할 때 몇 시간씩 어긋나 보임 (olivia 확인 2026-08-07).
+    - cron: '*/20 22-23,0-14 * * *'   # UTC 22~23시 = KST 07~08시, UTC 0~14시 = KST 09~23시
   workflow_dispatch: {}       # 수동 실행 버튼
 
 permissions:

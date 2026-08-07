@@ -150,6 +150,7 @@ const STR = {
     title: '셔틀 예약현황',
     sub: '각 노선 최소 운행 인원(30명) 도달 시 운행이 확정됩니다.',
     updLabel: '업데이트', seatLabel: (b)=>`예약 ${b}석 / 최소 30석`, refreshLabel: '새로고침',
+    dataBuilt: (t)=>`예약 데이터 기준 ${t}`,
     dateLbl: {'10.23':'10.23 (금)','10.24':'10.24 (토)','10.25':'10.25 (일)'},
     dirLbl: {'행사장행':'행사장행 (무주 리조트행)','귀가행':'귀가행'},
     routeSuffix: ' 노선', avgLabel: '평균 ',
@@ -163,6 +164,7 @@ const STR = {
     title: 'Shuttle Reservation Status',
     sub: 'Each route is confirmed once it reaches the minimum of 30 passengers.',
     updLabel: 'Updated', seatLabel: (b)=>`${b} of 30 seats booked`, refreshLabel: 'Refresh',
+    dataBuilt: (t)=>`Booking data as of ${t}`,
     dateLbl: {'10.23':'Oct 23 (Fri)','10.24':'Oct 24 (Sat)','10.25':'Oct 25 (Sun)'},
     dirLbl: {'행사장행':'To Venue (Muju Resort)','귀가행':'Return'},
     routeSuffix: ' Route', avgLabel: 'Avg ',
@@ -177,7 +179,8 @@ const STR = {
 
 let LANG = 'ko';
 let curDate = Object.keys(DATA.ko)[0], curDir = '행사장행';
-let lastUpdatedTs = null;
+let lastUpdatedTs = null;   // 마지막으로 현황을 받아온(=새로고침한) 시각
+let dataBuiltTs = null;     // 원천 예약 데이터가 생성된 시각(툴팁)
 
 const rateOf = b => Math.min(100, (b/MIN)*100);
 const fmtRate = r => r.toFixed(2);
@@ -199,8 +202,10 @@ function applyStaticText(){
 
 function updTimestamp(){
   const s = STR[LANG];
-  const d = lastUpdatedTs ? new Date(lastUpdatedTs) : new Date();
-  document.getElementById('upd').textContent = d.toLocaleString(s.locale,{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  const fmt = ts => new Date(ts).toLocaleString(s.locale,{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  const el = document.getElementById('upd');
+  el.textContent = fmt(lastUpdatedTs || Date.now());
+  el.title = dataBuiltTs ? s.dataBuilt(fmt(dataBuiltTs)) : '';
 }
 
 function currentData(){ return DATA[LANG]; }
@@ -317,7 +322,8 @@ async function loadLive(opts){
     Object.keys(DATA.en).forEach(k=>delete DATA.en[k]);
     Object.assign(DATA.ko, liveKo.days || liveKo);
     Object.assign(DATA.en, liveEn.days || liveEn);
-    lastUpdatedTs = liveKo.updated || Date.now();
+    lastUpdatedTs = Date.now();                                        // 현황을 실제로 받아온 시각 = 화면 표시값
+    dataBuiltTs   = liveKo.updated ? Date.parse(liveKo.updated) : null; // 원천 데이터 생성 시각
     if(!keepView) curDate = null;      // 새로고침 시에는 보고 있던 날짜/방향 유지
     ensureDir(); renderAll();
   }catch(e){ console.warn('status fetch 실패, 내장 데이터 사용', e); }
