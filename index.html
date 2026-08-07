@@ -180,7 +180,8 @@ const STR = {
 let LANG = 'ko';
 let curDate = Object.keys(DATA.ko)[0], curDir = '행사장행';
 let lastUpdatedTs = null;   // 마지막으로 현황을 받아온(=새로고침한) 시각
-let dataBuiltTs = null;     // 원천 예약 데이터가 생성된 시각(툴팁)
+let dataBuiltTs = null;     // status.json 폴백일 때 그 스냅샷을 구운 시각(툴팁)
+let srcChecked = null;      // 어드민 리포트가 표기한 조회일시(툴팁)
 
 const rateOf = b => Math.min(100, (b/MIN)*100);
 const fmtRate = r => r.toFixed(2);
@@ -205,7 +206,8 @@ function updTimestamp(){
   const fmt = ts => new Date(ts).toLocaleString(s.locale,{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
   const el = document.getElementById('upd');
   el.textContent = fmt(lastUpdatedTs || Date.now());
-  el.title = dataBuiltTs ? s.dataBuilt(fmt(dataBuiltTs)) : '';
+  el.title = srcChecked ? s.dataBuilt(srcChecked)
+           : dataBuiltTs ? s.dataBuilt(fmt(dataBuiltTs)) : '';
 }
 
 function currentData(){ return DATA[LANG]; }
@@ -307,9 +309,37 @@ document.getElementById('langToggle').addEventListener('click', e=>{
 
 ensureDir(); renderAll();
 
-/* 실운영 연결 (GitHub Pages 동일 origin): status.json(ko) + status-en.json(en) 둘 다 로드 */
+/* 실운영 연결
+   1순위: 어드민 리포트를 브라우저에서 직접 읽어 그 자리에서 계산(= 열 때마다/새로고침마다 실시간).
+          어드민이 CORS를 열어두고 있고 압축 11KB라 부담 없음. 계산은 gtws_build.js(빌드 스크립트와 공용).
+   2순위: 어드민이 죽거나 표 구조가 바뀌면 스케줄로 구워둔 status.json 스냅샷으로 폴백.
+   3순위: 그마저 실패하면 파일에 내장된 데이터로 화면은 유지. */
+const REPORT_URL = 'https://admin.rideus.net/shuttlebus-report/gtws';
+
 async function loadLive(opts){
   const keepView = !!(opts && opts.keepView);
+  const apply = (ko, en)=>{
+    Object.keys(DATA.ko).forEach(k=>delete DATA.ko[k]);
+    Object.keys(DATA.en).forEach(k=>delete DATA.en[k]);
+    Object.assign(DATA.ko, ko);
+    Object.assign(DATA.en, en);
+    lastUpdatedTs = Date.now();        // 현황을 실제로 받아온 시각 = 화면 표시값
+    if(!keepView) curDate = null;      // 새로고침 시에는 보고 있던 날짜/방향 유지
+    ensureDir(); renderAll();
+  };
+
+  try{
+    const [html, B] = await Promise.all([
+      fetch(REPORT_URL + '?t=' + Date.now(), {cache:'no-store'}).then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); }),
+      import('./gtws_build.js')
+    ]);
+    const built = B.buildAll(html);
+    srcChecked = built.sourceChecked || null;   // 어드민이 표기한 조회일시
+    dataBuiltTs = null;
+    apply(built.ko, built.en);
+    return;
+  }catch(e){ console.warn('어드민 직접 조회 실패 → status.json 폴백', e); }
+
   try{
     const bust = '?t=' + Date.now();   // GH Pages CDN 캐시 우회
     const [resKo, resEn] = await Promise.all([
@@ -318,14 +348,9 @@ async function loadLive(opts){
     ]);
     const liveKo = await resKo.json();
     const liveEn = await resEn.json();
-    Object.keys(DATA.ko).forEach(k=>delete DATA.ko[k]);
-    Object.keys(DATA.en).forEach(k=>delete DATA.en[k]);
-    Object.assign(DATA.ko, liveKo.days || liveKo);
-    Object.assign(DATA.en, liveEn.days || liveEn);
-    lastUpdatedTs = Date.now();                                        // 현황을 실제로 받아온 시각 = 화면 표시값
-    dataBuiltTs   = liveKo.updated ? Date.parse(liveKo.updated) : null; // 원천 데이터 생성 시각
-    if(!keepView) curDate = null;      // 새로고침 시에는 보고 있던 날짜/방향 유지
-    ensureDir(); renderAll();
+    srcChecked  = liveKo.sourceChecked || null;
+    dataBuiltTs = liveKo.updated ? Date.parse(liveKo.updated) : null;   // 스냅샷 생성 시각
+    apply(liveKo.days || liveKo, liveEn.days || liveEn);
   }catch(e){ console.warn('status fetch 실패, 내장 데이터 사용', e); }
 }
 loadLive();
