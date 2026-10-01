@@ -1,7 +1,7 @@
 {
- "updated": "2026-09-30T15:47:57.374Z",
+ "updated": "2026-10-01T05:25:51.716Z",
  "source": "https://admin.rideus.net/shuttlebus-report/gtws",
- "sourceChecked": "2026-10-01 00:47",
+ "sourceChecked": "2026-10-01 14:25",
  "min": 30,
  "days": {
   "10.23": {
@@ -12,48 +12,7 @@
     },
     "Muju Terminal": {
      "stops": "Muju Public Bus Terminal",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "10:30",
-       "deps": [
-        "10:30"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "2회차",
-       "dep": "13:00",
-       "deps": [
-        "13:00"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "3회차",
-       "dep": "14:30",
-       "deps": [
-        "14:30"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "4회차",
-       "dep": "17:30",
-       "deps": [
-        "17:30"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "5회차",
-       "dep": "20:00",
-       "deps": [
-        "20:00"
-       ],
-       "booked": 0
-      }
-     ]
+     "runs": []
     },
     "Cheonan / Sejong": {
      "stops": "Shinsegae Dept. Store, Cheonan+BRT Transfer Center, Sejong",
@@ -72,7 +31,7 @@
        "deps": [
         "12:00"
        ],
-       "booked": 27
+       "booked": 31
       },
       {
        "run": "2회차",
@@ -151,26 +110,7 @@
     },
     "Goyang / Gimpo": {
      "stops": "Baekseok Station Exit 2+Gimpo Airport (Int'l)",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "12:00",
-       "deps": [
-        "12:00",
-        "12:20"
-       ],
-       "booked": 6
-      },
-      {
-       "run": "2회차",
-       "dep": "19:00",
-       "deps": [
-        "19:00",
-        "19:20"
-       ],
-       "booked": 2
-      }
-     ]
+     "runs": []
     },
     "Uijeongbu / Namyangju": {
      "stops": "Uijeongbu Station Underground Mall Exit 6+Byeollae Station Exit 2",
@@ -178,24 +118,7 @@
     },
     "Busan": {
      "stops": "Busan Station Exit 4",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "11:00",
-       "deps": [
-        "11:00"
-       ],
-       "booked": 7
-      },
-      {
-       "run": "2회차",
-       "dep": "19:00",
-       "deps": [
-        "19:00"
-       ],
-       "booked": 0
-      }
-     ]
+     "runs": []
     },
     "Ulsan / Daegu": {
      "stops": "Taehwa Rotary, Ulsan+Daegu Concert House",
@@ -216,64 +139,7 @@
     },
     "Muju Terminal": {
      "stops": "Muju Public Bus Terminal",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "03:05",
-       "deps": [
-        "03:05"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "2회차",
-       "dep": "09:00",
-       "deps": [
-        "09:00"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "3회차",
-       "dep": "10:30",
-       "deps": [
-        "10:30"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "4회차",
-       "dep": "13:00",
-       "deps": [
-        "13:00"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "5회차",
-       "dep": "15:00",
-       "deps": [
-        "15:00"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "6회차",
-       "dep": "17:30",
-       "deps": [
-        "17:30"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "7회차",
-       "dep": "20:00",
-       "deps": [
-        "20:00"
-       ],
-       "booked": 3
-      }
-     ]
+     "runs": []
     },
     "Cheonan / Sejong": {
      "stops": "Shinsegae Dept. Store, Cheonan+BRT Transfer Center, Sejong",
@@ -300,7 +166,7 @@
        "deps": [
         "06:00"
        ],
-       "booked": 15
+       "booked": 17
       },
       {
        "run": "3회차",
@@ -316,7 +182,7 @@
        "deps": [
         "12:00"
        ],
-       "booked": 27
+       "booked": 31
       },
       {
        "run": "5회차",
@@ -388,35 +254,7 @@
     },
     "Goyang / Gimpo": {
      "stops": "Baekseok Station Exit 2+Gimpo Airport (Int'l)",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "00:00",
-       "deps": [
-        "00:00",
-        "00:20"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "2회차",
-       "dep": "06:30",
-       "deps": [
-        "06:30",
-        "06:50"
-       ],
-       "booked": 7
-      },
-      {
-       "run": "3회차",
-       "dep": "11:30",
-       "deps": [
-        "11:30",
-        "11:50"
-       ],
-       "booked": 4
-      }
-     ]
+     "runs": []
     },
     "Uijeongbu / Namyangju": {
      "stops": "Uijeongbu Station Underground Mall Exit 6+Byeollae Station Exit 2",
@@ -424,32 +262,7 @@
     },
     "Busan": {
      "stops": "Busan Station Exit 4",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "00:30",
-       "deps": [
-        "00:30"
-       ],
-       "booked": 1
-      },
-      {
-       "run": "2회차",
-       "dep": "07:00",
-       "deps": [
-        "07:00"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "3회차",
-       "dep": "12:00",
-       "deps": [
-        "12:00"
-       ],
-       "booked": 0
-      }
-     ]
+     "runs": []
     },
     "Ulsan / Daegu": {
      "stops": "Taehwa Rotary, Ulsan+Daegu Concert House",
@@ -500,24 +313,7 @@
     },
     "Muju Terminal": {
      "stops": "Muju Public Bus Terminal",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "19:30",
-       "deps": [
-        "19:30"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "2회차",
-       "dep": "21:30",
-       "deps": [
-        "21:30"
-       ],
-       "booked": 0
-      }
-     ]
+     "runs": []
     },
     "Cheonan / Sejong": {
      "stops": "Shinsegae Dept. Store, Cheonan+BRT Transfer Center, Sejong",
@@ -536,7 +332,7 @@
        "deps": [
         "19:15"
        ],
-       "booked": 14
+       "booked": 15
       },
       {
        "run": "2회차",
@@ -557,7 +353,7 @@
        "deps": [
         "19:15"
        ],
-       "booked": 29
+       "booked": 30
       },
       {
        "run": "2회차",
@@ -571,66 +367,15 @@
     },
     "Sangbong Station": {
      "stops": "Sangbong Station Exit 1",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "19:15",
-       "deps": [
-        "19:15"
-       ],
-       "booked": 8
-      },
-      {
-       "run": "2회차",
-       "dep": "21:15",
-       "deps": [
-        "21:15"
-       ],
-       "booked": 0
-      }
-     ]
+     "runs": []
     },
     "Incheon": {
      "stops": "Incheon Airport T2+Incheon Airport T1+Woninjae Station Exit 1",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "19:15",
-       "deps": [
-        "19:15"
-       ],
-       "booked": 5
-      },
-      {
-       "run": "2회차",
-       "dep": "21:15",
-       "deps": [
-        "21:15"
-       ],
-       "booked": 0
-      }
-     ]
+     "runs": []
     },
     "Goyang / Gimpo": {
      "stops": "Baekseok Station Exit 2+Gimpo Airport (Int'l)",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "19:15",
-       "deps": [
-        "19:15"
-       ],
-       "booked": 2
-      },
-      {
-       "run": "2회차",
-       "dep": "21:15",
-       "deps": [
-        "21:15"
-       ],
-       "booked": 1
-      }
-     ]
+     "runs": []
     },
     "Uijeongbu / Namyangju": {
      "stops": "Uijeongbu Station Underground Mall Exit 6+Byeollae Station Exit 2",
@@ -638,24 +383,7 @@
     },
     "Busan": {
      "stops": "Busan Station Exit 4",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "19:00",
-       "deps": [
-        "19:00"
-       ],
-       "booked": 7
-      },
-      {
-       "run": "2회차",
-       "dep": "21:00",
-       "deps": [
-        "21:00"
-       ],
-       "booked": 0
-      }
-     ]
+     "runs": []
     },
     "Ulsan / Daegu": {
      "stops": "Taehwa Rotary, Ulsan+Daegu Concert House",
@@ -675,32 +403,7 @@
     },
     "Muju Terminal": {
      "stops": "Muju Public Bus Terminal",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "03:05",
-       "deps": [
-        "03:05"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "2회차",
-       "dep": "09:00",
-       "deps": [
-        "09:00"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "3회차",
-       "dep": "10:30",
-       "deps": [
-        "10:30"
-       ],
-       "booked": 0
-      }
-     ]
+     "runs": []
     },
     "Cheonan / Sejong": {
      "stops": "Shinsegae Dept. Store, Cheonan+BRT Transfer Center, Sejong",
@@ -727,7 +430,7 @@
        "deps": [
         "06:00"
        ],
-       "booked": 16
+       "booked": 17
       },
       {
        "run": "3회차",
@@ -781,26 +484,7 @@
     },
     "Goyang / Gimpo": {
      "stops": "Baekseok Station Exit 2+Gimpo Airport (Int'l)",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "00:30",
-       "deps": [
-        "00:30",
-        "00:50"
-       ],
-       "booked": 1
-      },
-      {
-       "run": "2회차",
-       "dep": "06:30",
-       "deps": [
-        "06:30",
-        "06:50"
-       ],
-       "booked": 2
-      }
-     ]
+     "runs": []
     },
     "Uijeongbu / Namyangju": {
      "stops": "Uijeongbu Station Underground Mall Exit 6+Byeollae Station Exit 2",
@@ -808,24 +492,7 @@
     },
     "Busan": {
      "stops": "Busan Station Exit 4",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "01:00",
-       "deps": [
-        "01:00"
-       ],
-       "booked": 3
-      },
-      {
-       "run": "2회차",
-       "dep": "07:00",
-       "deps": [
-        "07:00"
-       ],
-       "booked": 1
-      }
-     ]
+     "runs": []
     },
     "Ulsan / Daegu": {
      "stops": "Taehwa Rotary, Ulsan+Daegu Concert House",
@@ -846,7 +513,7 @@
        "deps": [
         "15:00"
        ],
-       "booked": 16
+       "booked": 17
       },
       {
        "run": "2회차",
@@ -876,24 +543,7 @@
     },
     "Muju Terminal": {
      "stops": "Muju Public Bus Terminal",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "19:30",
-       "deps": [
-        "19:30"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "2회차",
-       "dep": "21:30",
-       "deps": [
-        "21:30"
-       ],
-       "booked": 0
-      }
-     ]
+     "runs": []
     },
     "Cheonan / Sejong": {
      "stops": "Shinsegae Dept. Store, Cheonan+BRT Transfer Center, Sejong",
@@ -920,7 +570,7 @@
        "deps": [
         "21:15"
        ],
-       "booked": 24
+       "booked": 25
       }
      ]
     },
@@ -947,66 +597,15 @@
     },
     "Sangbong Station": {
      "stops": "Sangbong Station Exit 1",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "19:15",
-       "deps": [
-        "19:15"
-       ],
-       "booked": 3
-      },
-      {
-       "run": "2회차",
-       "dep": "21:15",
-       "deps": [
-        "21:15"
-       ],
-       "booked": 1
-      }
-     ]
+     "runs": []
     },
     "Incheon": {
      "stops": "Incheon Airport T2+Incheon Airport T1+Woninjae Station Exit 1",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "19:15",
-       "deps": [
-        "19:15"
-       ],
-       "booked": 0
-      },
-      {
-       "run": "2회차",
-       "dep": "21:15",
-       "deps": [
-        "21:15"
-       ],
-       "booked": 4
-      }
-     ]
+     "runs": []
     },
     "Goyang / Gimpo": {
      "stops": "Baekseok Station Exit 2+Gimpo Airport (Int'l)",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "19:15",
-       "deps": [
-        "19:15"
-       ],
-       "booked": 7
-      },
-      {
-       "run": "2회차",
-       "dep": "21:15",
-       "deps": [
-        "21:15"
-       ],
-       "booked": 4
-      }
-     ]
+     "runs": []
     },
     "Uijeongbu / Namyangju": {
      "stops": "Uijeongbu Station Underground Mall Exit 6+Byeollae Station Exit 2",
@@ -1014,24 +613,7 @@
     },
     "Busan": {
      "stops": "Busan Station Exit 4",
-     "runs": [
-      {
-       "run": "1회차",
-       "dep": "19:00",
-       "deps": [
-        "19:00"
-       ],
-       "booked": 3
-      },
-      {
-       "run": "2회차",
-       "dep": "21:00",
-       "deps": [
-        "21:00"
-       ],
-       "booked": 1
-      }
-     ]
+     "runs": []
     },
     "Ulsan / Daegu": {
      "stops": "Taehwa Rotary, Ulsan+Daegu Concert House",
