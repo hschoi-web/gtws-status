@@ -1,7 +1,7 @@
 {
- "updated": "2026-10-20T14:14:00.174Z",
+ "updated": "2026-10-21T04:19:14.981Z",
  "source": "https://admin.rideus.net/shuttlebus-report/gtws",
- "sourceChecked": "2026-10-20 23:14",
+ "sourceChecked": "2026-10-21 13:19",
  "min": 30,
  "days": {
   "10.23": {
@@ -213,7 +213,7 @@
         "06:00",
         "06:20"
        ],
-       "booked": 20
+       "booked": 22
       },
       {
        "run": "3회차",
@@ -283,7 +283,7 @@
        "deps": [
         "15:00"
        ],
-       "booked": 26
+       "booked": 27
       },
       {
        "run": "2회차",
@@ -591,7 +591,7 @@
        "deps": [
         "21:15"
        ],
-       "booked": 25
+       "booked": 26
       }
      ]
     },
